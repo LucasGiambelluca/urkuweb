@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useActionState } from "react";
 import Image from "next/image";
-import { Monitor, Radio, FileText, Award, Eye, Calendar, Sparkles, ArrowRight, Download, Send, X, CheckCircle2 } from "lucide-react";
+import { Monitor, Radio, FileText, Award, Eye, Calendar, Sparkles, ArrowRight, Download, Send, X, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { enviarConsulta } from "@/app/actions/consultas";
+import { estadoInicial } from "@/lib/consultas/estado";
 
 const AD_FORMATS = [
   {
@@ -45,9 +47,11 @@ const STATS = [
 
 export default function AdvertisingSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
+
+  // Estable, porque el formulario la usa dentro de un efecto.
+  const cerrarModal = useCallback(() => setIsModalOpen(false), []);
 
   // Trap focus & ESC key for modal accessibility
   useEffect(() => {
@@ -92,15 +96,6 @@ export default function AdvertisingSection() {
       document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setIsModalOpen(false);
-    }, 2500);
-  };
 
   return (
     <section
@@ -283,6 +278,40 @@ export default function AdvertisingSection() {
                 <X size={18} aria-hidden="true" />
               </button>
 
+              <FormularioPublicidad alCerrar={cerrarModal} refPrimerCampo={firstInputRef} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+/**
+ * El formulario vive en su propio componente y no en la seccion, para que el
+ * estado del envio se pierda al cerrar el modal. Si el hook estuviera en el
+ * padre, que nunca se desmonta, al reabrir el modal seguiria mostrando el
+ * panel de exito del envio anterior en lugar de un formulario limpio.
+ */
+function FormularioPublicidad({
+  alCerrar,
+  refPrimerCampo,
+}: {
+  alCerrar: () => void;
+  refPrimerCampo: React.RefObject<HTMLInputElement | null>;
+}) {
+  const [resultado, accionEnviar, enviando] = useActionState(enviarConsulta, estadoInicial);
+  const isSubmitted = resultado.estado === "ok";
+
+  // Se cierra solo despues del exito, como hacia antes de conectar el guardado.
+  useEffect(() => {
+    if (!isSubmitted) return;
+    const temporizador = setTimeout(alCerrar, 2500);
+    return () => clearTimeout(temporizador);
+  }, [isSubmitted, alCerrar]);
+
+  return (
+    <>
               {isSubmitted ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-500">
@@ -309,7 +338,19 @@ export default function AdvertisingSection() {
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form action={accionEnviar} className="space-y-4">
+                    <input type="hidden" name="tipo" value="publicidad" />
+                    <input type="hidden" name="nombre" value="Consulta de publicidad" />
+                    {/* Campo trampa: invisible para las personas, lo llenan los bots. */}
+                    <input
+                      type="text"
+                      name="sitioWeb"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                    />
+
                     {/* Pre-filled Subject */}
                     <div>
                       <label htmlFor="asunto" className="block text-xs font-semibold text-foreground mb-1">
@@ -318,6 +359,7 @@ export default function AdvertisingSection() {
                       <input
                         type="text"
                         id="asunto"
+                        name="asunto"
                         readOnly
                         value="Solicitud de Cotización Publicitaria"
                         className="w-full rounded-xl border border-border-subtle bg-white/20 dark:bg-white/[0.02] px-4 py-2.5 text-xs font-semibold text-[#EB2347] focus:outline-none"
@@ -329,9 +371,10 @@ export default function AdvertisingSection() {
                         Empresa / Marca *
                       </label>
                       <input
-                        ref={firstInputRef}
+                        ref={refPrimerCampo}
                         type="text"
                         id="empresa"
+                        name="empresa"
                         required
                         placeholder="Ej. Textil Argentina S.A."
                         className="w-full rounded-xl border border-border-subtle bg-white/40 dark:bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
@@ -346,6 +389,7 @@ export default function AdvertisingSection() {
                         <input
                           type="email"
                           id="email-ad"
+                          name="email"
                           required
                           placeholder="contacto@marca.com"
                           className="w-full rounded-xl border border-border-subtle bg-white/40 dark:bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
@@ -359,6 +403,7 @@ export default function AdvertisingSection() {
                         <input
                           type="tel"
                           id="telefono-ad"
+                          name="telefono"
                           required
                           placeholder="11 2345-6789"
                           className="w-full rounded-xl border border-border-subtle bg-white/40 dark:bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
@@ -372,6 +417,7 @@ export default function AdvertisingSection() {
                       </label>
                       <select
                         id="formato"
+                        name="formato"
                         required
                         className="w-full rounded-xl border border-border-subtle bg-white/40 dark:bg-white/[0.04] px-4 py-3 text-sm text-foreground focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
                       >
@@ -390,16 +436,28 @@ export default function AdvertisingSection() {
                       </label>
                       <textarea
                         id="mensaje-ad"
+                        name="mensaje"
                         rows={3}
                         placeholder="Comentarios sobre la campaña, período estimado o presupuesto..."
                         className="w-full rounded-xl border border-border-subtle bg-white/40 dark:bg-white/[0.04] px-4 py-3 text-sm text-foreground placeholder:text-muted focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20 resize-none"
                       />
                     </div>
 
+                    {resultado.estado === "error" && (
+                      <div className="flex items-center gap-2.5 rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-xs font-semibold text-red-600 dark:text-red-400">
+                        <AlertCircle size={16} className="shrink-0" aria-hidden="true" />
+                        <span>
+                          {resultado.mensajeGeneral ??
+                            "Por favor, corregí los campos indicados antes de enviar."}
+                        </span>
+                      </div>
+                    )}
+
                     <div className="pt-2">
                       <button
                         type="submit"
-                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#EB2347] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#EB2347]/25 transition hover:bg-[#C41A3A] focus:outline-none focus:ring-2 focus:ring-[#EB2347] cursor-pointer"
+                        disabled={enviando}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#EB2347] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#EB2347]/25 transition hover:bg-[#C41A3A] focus:outline-none focus:ring-2 focus:ring-[#EB2347] disabled:opacity-60 cursor-pointer"
                       >
                         <Send size={16} aria-hidden="true" />
                         Enviar Solicitud de Cotización
@@ -408,10 +466,6 @@ export default function AdvertisingSection() {
                   </form>
                 </div>
               )}
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </section>
+    </>
   );
 }

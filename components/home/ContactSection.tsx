@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { enviarConsulta } from "@/app/actions/consultas";
+import { estadoInicial } from "@/lib/consultas/estado";
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -33,74 +35,16 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    telefono: "",
-    asunto: "General",
-    mensaje: "",
-  });
+  const [resultado, accionEnviar, enviando] = useActionState(enviarConsulta, estadoInicial);
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = "El nombre y apellido son obligatorios.";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "El correo electrónico es obligatorio.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Ingresá un correo electrónico válido.";
-    }
-
-    if (!formData.mensaje.trim()) {
-      newErrors.mensaje = "El mensaje no puede estar vacío.";
-    } else if (formData.mensaje.trim().length < 10) {
-      newErrors.mensaje = "El mensaje debe contener al menos 10 caracteres.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setStatus("error");
-      return;
-    }
-
-    setStatus("submitting");
-
-    // Simulate API request submission
-    setTimeout(() => {
-      setStatus("success");
-      setFormData({
-        nombre: "",
-        email: "",
-        telefono: "",
-        asunto: "General",
-        mensaje: "",
-      });
-      setErrors({});
-    }, 1200);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy[name];
-        return copy;
-      });
-    }
-  };
+  const errors = resultado.errores;
+  const status = enviando
+    ? "submitting"
+    : resultado.estado === "ok"
+      ? "success"
+      : resultado.estado === "error"
+        ? "error"
+        : "idle";
 
   return (
     <section
@@ -165,7 +109,18 @@ export default function ContactSection() {
             className="lg:col-span-7"
           >
             <div className="rounded-[32px] border border-border-subtle bg-white dark:bg-[#0E1626] p-6 md:p-10 transition-all duration-300 hover:shadow-xl">
-              <form onSubmit={handleSubmit} noValidate className="space-y-5">
+              <form action={accionEnviar} noValidate className="space-y-5">
+
+                <input type="hidden" name="tipo" value="contacto" />
+                {/* Campo trampa: invisible para las personas, lo llenan los bots. */}
+                <input
+                  type="text"
+                  name="sitioWeb"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                />
 
                 {/* Nombre field */}
                 <div>
@@ -176,8 +131,6 @@ export default function ContactSection() {
                     type="text"
                     id="contact-nombre"
                     name="nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
                     aria-required="true"
                     aria-invalid={!!errors.nombre}
                     aria-describedby={errors.nombre ? "nombre-error" : undefined}
@@ -206,8 +159,6 @@ export default function ContactSection() {
                       type="email"
                       id="contact-email"
                       name="email"
-                      value={formData.email}
-                      onChange={handleChange}
                       aria-required="true"
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? "email-error" : undefined}
@@ -234,8 +185,6 @@ export default function ContactSection() {
                       type="tel"
                       id="contact-telefono"
                       name="telefono"
-                      value={formData.telefono}
-                      onChange={handleChange}
                       placeholder="11 2345-6789"
                       className="w-full rounded-2xl border border-border-subtle bg-white/50 dark:bg-white/[0.04] px-4 py-3.5 text-sm text-foreground placeholder:text-muted transition-all focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
                     />
@@ -250,8 +199,7 @@ export default function ContactSection() {
                   <select
                     id="contact-asunto"
                     name="asunto"
-                    value={formData.asunto}
-                    onChange={handleChange}
+                    defaultValue="General"
                     className="w-full rounded-2xl border border-border-subtle bg-white/50 dark:bg-white/[0.04] px-4 py-3.5 text-sm text-foreground transition-all focus:border-[#EB2347] focus:outline-none focus:ring-2 focus:ring-[#EB2347]/20"
                   >
                     <option value="General" className="bg-white dark:bg-[#0E1626] text-foreground">Consulta General</option>
@@ -271,8 +219,6 @@ export default function ContactSection() {
                     id="contact-mensaje"
                     name="mensaje"
                     rows={4}
-                    value={formData.mensaje}
-                    onChange={handleChange}
                     aria-required="true"
                     aria-invalid={!!errors.mensaje}
                     aria-describedby={errors.mensaje ? "mensaje-error" : undefined}
@@ -311,10 +257,13 @@ export default function ContactSection() {
                     </div>
                   )}
 
-                  {status === "error" && Object.keys(errors).length > 0 && (
+                  {status === "error" && (
                     <div className="flex items-center gap-2.5 rounded-2xl bg-red-500/10 border border-red-500/20 p-4 text-sm font-semibold text-red-600 dark:text-red-400">
                       <AlertCircle size={20} className="shrink-0" />
-                      <span>Por favor, corregí los campos indicados antes de enviar.</span>
+                      <span>
+                        {resultado.mensajeGeneral ??
+                          "Por favor, corregí los campos indicados antes de enviar."}
+                      </span>
                     </div>
                   )}
                 </div>

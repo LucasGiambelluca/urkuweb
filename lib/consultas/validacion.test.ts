@@ -67,6 +67,21 @@ describe('validarConsulta', () => {
     expect(r.ok && r.datos.empresa).toBe('Textil SA');
   });
 
+  it('en publicidad el mensaje es opcional, como dice la pantalla', () => {
+    const r = validarConsulta({ ...base, tipo: 'publicidad', mensaje: '' });
+    expect(r.ok).toBe(true);
+  });
+
+  it('en publicidad no exige el largo minimo, porque el campo es opcional', () => {
+    const r = validarConsulta({ ...base, tipo: 'publicidad', mensaje: 'urgente' });
+    expect(r.ok).toBe(true);
+  });
+
+  it('en publicidad igual rechaza un mensaje desmesurado', () => {
+    const r = validarConsulta({ ...base, tipo: 'publicidad', mensaje: 'a'.repeat(5001) });
+    expect(!r.ok && r.errores.mensaje).toBeTruthy();
+  });
+
   it('conserva el formato publicitario elegido', () => {
     const r = validarConsulta({ ...base, tipo: 'publicidad', formato: 'carteleria' });
     expect(r.ok && r.datos.formato).toBe('carteleria');

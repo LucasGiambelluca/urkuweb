@@ -50,10 +50,18 @@ export function validarConsulta(entrada: EntradaConsulta): ResultadoValidacion {
     errores.email = 'Ingresa un correo electronico valido.';
   }
 
+  // El mensaje es obligatorio en el formulario de contacto, donde es todo el
+  // contenido de la consulta. En el de publicidad la pantalla lo marca como
+  // opcional —lo que importa ahi es la empresa, el contacto y el formato—, y
+  // el servidor tiene que respetar lo que la pantalla promete.
   const mensaje = limpiar(entrada.mensaje);
+  const mensajeEsObligatorio = tipo === 'contacto';
+
   if (mensaje === '') {
-    errores.mensaje = 'El mensaje no puede estar vacio.';
-  } else if (mensaje.length < LARGO_MINIMO_MENSAJE) {
+    if (mensajeEsObligatorio) {
+      errores.mensaje = 'El mensaje no puede estar vacio.';
+    }
+  } else if (mensajeEsObligatorio && mensaje.length < LARGO_MINIMO_MENSAJE) {
     errores.mensaje = `El mensaje debe contener al menos ${LARGO_MINIMO_MENSAJE} caracteres.`;
   } else if (mensaje.length > LARGO_MAXIMO_MENSAJE) {
     errores.mensaje = 'El mensaje es demasiado largo.';
