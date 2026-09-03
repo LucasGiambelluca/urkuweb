@@ -608,6 +608,18 @@ export interface Servicio {
       detalle: string;
     };
   };
+  alquiler?: {
+    /**
+     * Se muestran como lista en la seccion de alquiler. El orden de esta lista es el orden en que se ven.
+     */
+    condiciones?:
+      | {
+          titulo: string;
+          detalle: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   estacionamiento: {
     precio: string;
     moneda: string;
@@ -681,6 +693,17 @@ export interface ServiciosSelect<T extends boolean = true> {
               precio?: T;
               moneda?: T;
               detalle?: T;
+            };
+      };
+  alquiler?:
+    | T
+    | {
+        condiciones?:
+          | T
+          | {
+              titulo?: T;
+              detalle?: T;
+              id?: T;
             };
       };
   estacionamiento?:

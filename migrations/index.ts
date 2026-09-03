@@ -3,6 +3,7 @@ import * as migration_20260903_193441_agregar_rol from './20260903_193441_agrega
 import * as migration_20260903_201741_consultas from './20260903_201741_consultas';
 import * as migration_20260903_205031_sponsors from './20260903_205031_sponsors';
 import * as migration_20260903_215202_globales from './20260903_215202_globales';
+import * as migration_20260903_221046_alquiler from './20260903_221046_alquiler';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260903_215202_globales.up,
     down: migration_20260903_215202_globales.down,
-    name: '20260903_215202_globales'
+    name: '20260903_215202_globales',
+  },
+  {
+    up: migration_20260903_221046_alquiler.up,
+    down: migration_20260903_221046_alquiler.down,
+    name: '20260903_221046_alquiler'
   },
 ];

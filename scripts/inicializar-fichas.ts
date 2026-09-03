@@ -6,6 +6,11 @@
  *
  * Es idempotente: si la ficha ya tiene datos, no la pisa.
  *
+ * LIMITACION: la idempotencia se mide por ficha entera, no por campo. Si mas
+ * adelante se le agrega un campo nuevo a una ficha que ya fue inicializada,
+ * este script la saltea y el campo queda vacio. En ese caso hay que cargarlo
+ * desde el panel, o borrar la fila de esa ficha y volver a correr el script.
+ *
  * Uso: npm run inicializar:fichas
  */
 import { getPayload } from 'payload';
