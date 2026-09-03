@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { es } from '@payloadcms/translations/languages/es';
 import sharp from 'sharp';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,6 +29,10 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' - Paseo Urkupina',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/icon.png' }],
+    },
   },
   collections: [Users, Categories, Media, Posts],
   editor: lexicalEditor({}),
@@ -37,6 +42,10 @@ export default buildConfig({
   secret: payloadSecret,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  i18n: {
+    supportedLanguages: { es },
+    fallbackLanguage: 'es',
   },
   // Postgres corre en la misma maquina y se accede por loopback, asi que no
   // lleva SSL. El condicional anterior lo activaba solo para Supabase.
