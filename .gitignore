@@ -44,3 +44,8 @@ next-env.d.ts
 node_modules/
 .env*.local
 .env
+
+# Archivos subidos desde el panel. Son datos del cliente, no codigo.
+# Ademas de no ensuciar el repositorio, estar ignorados los protege de un
+# `git clean -fd`, que borra los archivos no rastreados.
+/public/media/
