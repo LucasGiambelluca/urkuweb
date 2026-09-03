@@ -75,28 +75,44 @@ const sembrar = async () => {
       overrideAccess: true,
     });
 
-    await payload.create({
-      collection: 'sponsors',
-      data: {
-        nombre: sponsor.nombre,
-        logo: logo.id,
-        categoria: sponsor.categoria,
-        tamano: sponsor.tamano,
-        orden: sponsor.orden,
-        activo: true,
-      },
-      overrideAccess: true,
-    });
+    // Si el alta del sponsor falla, se borra la imagen recien subida. Sin
+    // esto queda un archivo huerfano que la proxima corrida no detecta,
+    // porque la idempotencia se mide por nombre de sponsor y el sponsor no
+    // llego a existir.
+    try {
+      await payload.create({
+        collection: 'sponsors',
+        data: {
+          nombre: sponsor.nombre,
+          logo: logo.id,
+          categoria: sponsor.categoria,
+          tamano: sponsor.tamano,
+          orden: sponsor.orden,
+          activo: true,
+        },
+        overrideAccess: true,
+      });
+    } catch (error) {
+      await payload.delete({ collection: 'media', id: logo.id, overrideAccess: true });
+      throw error;
+    }
 
     console.log(`+ ${sponsor.nombre}: cargado`);
   }
 
   const total = await payload.count({ collection: 'sponsors', overrideAccess: true });
   console.log(`\nSponsors en la base: ${total.totalDocs}`);
-  process.exit(0);
 };
 
-sembrar().catch((error) => {
+// Con await de nivel superior, no con sembrar().catch(). `payload run` termina
+// el proceso apenas el modulo deja de evaluarse: sin este await la promesa
+// queda pendiente, no escribe nada y el script sale con exito sin haber hecho
+// absolutamente nada.
+try {
+  await sembrar();
+} catch (error) {
   console.error('Fallo la siembra:', error);
   process.exit(1);
-});
+}
+
+process.exit(0);

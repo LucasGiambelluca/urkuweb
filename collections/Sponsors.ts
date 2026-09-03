@@ -2,6 +2,20 @@ import type { CollectionConfig } from 'payload';
 import { revalidatePath } from 'next/cache';
 import { soloAutenticado } from '../access/roles';
 
+/**
+ * revalidatePath solo funciona dentro del contexto de una peticion de Next.
+ * Guardar desde el panel lo tiene; un script de linea de comandos o una
+ * migracion, no, y ahi tira "static generation store missing". Sin este
+ * resguardo, sembrar datos desde un script falla entero.
+ */
+const purgarCacheDeLaHome = () => {
+  try {
+    revalidatePath('/');
+  } catch {
+    // Fuera de una peticion no hay cache que purgar: no es un error.
+  }
+};
+
 export const Sponsors: CollectionConfig = {
   slug: 'sponsors',
   admin: {
@@ -26,16 +40,8 @@ export const Sponsors: CollectionConfig = {
     delete: soloAutenticado,
   },
   hooks: {
-    afterChange: [
-      () => {
-        revalidatePath('/');
-      },
-    ],
-    afterDelete: [
-      () => {
-        revalidatePath('/');
-      },
-    ],
+    afterChange: [() => purgarCacheDeLaHome()],
+    afterDelete: [() => purgarCacheDeLaHome()],
   },
   fields: [
     {
