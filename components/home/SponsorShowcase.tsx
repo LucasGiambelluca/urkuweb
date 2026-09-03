@@ -6,41 +6,37 @@ import { ArrowRight, Handshake, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 
-const SPONSORS = [
-  {
-    name: "Commander Security",
-    logo: "/images/sponsors/commandersecurity.png",
-    category: "Seguridad",
-    sizeClass: "max-h-24 sm:max-h-28 max-w-[90%]",
-  },
-  {
-    name: "Prosegur Seguridad",
-    logo: "/images/sponsors/prosegur-vector-logo.png",
-    category: "Seguridad",
-    sizeClass: "max-h-24 sm:max-h-28 max-w-[90%]",
-  },
-  {
-    name: "Acudir Emergencias",
-    logo: "/images/sponsors/Acudir-01-1.png",
-    category: "Emergencias Médicas",
-    sizeClass: "max-h-20 sm:max-h-24 max-w-[85%]",
-  },
-  {
-    name: "Banco Provincia",
-    logo: "/images/sponsors/Banco_Provincia_(Bs.As.,_2021).svg.webp",
-    category: "Banca Institucional",
-    sizeClass: "max-h-20 sm:max-h-24 max-w-[85%]",
-  },
-  {
-    name: "Banco Credicoop",
-    logo: "/images/sponsors/creedicop.png",
-    category: "Banca Cooperativa",
-    sizeClass: "max-h-20 sm:max-h-24 max-w-[85%]",
-  },
+export type SponsorVisible = {
+  nombre: string;
+  categoria: string;
+  tamano: 'normal' | 'grande';
+  logo: string;
+  alt: string;
+};
+
+/**
+ * Respaldo: es lo que habia hardcodeado antes de que los sponsors salieran de
+ * la base. Se usa solo si la consulta falla, para que una caida de base no
+ * deje la seccion vacia.
+ */
+const SPONSORS_RESPALDO: SponsorVisible[] = [
+  { nombre: 'Commander Security', logo: '/images/sponsors/commandersecurity.png', categoria: 'Seguridad', tamano: 'grande', alt: 'Logo de Commander Security' },
+  { nombre: 'Prosegur Seguridad', logo: '/images/sponsors/prosegur-vector-logo.png', categoria: 'Seguridad', tamano: 'grande', alt: 'Logo de Prosegur Seguridad' },
+  { nombre: 'Acudir Emergencias', logo: '/images/sponsors/Acudir-01-1.png', categoria: 'Emergencias Medicas', tamano: 'normal', alt: 'Logo de Acudir Emergencias' },
+  { nombre: 'Banco Provincia', logo: '/images/sponsors/Banco_Provincia_(Bs.As.,_2021).svg.webp', categoria: 'Banca Institucional', tamano: 'normal', alt: 'Logo de Banco Provincia' },
+  { nombre: 'Banco Credicoop', logo: '/images/sponsors/creedicop.png', categoria: 'Banca Cooperativa', tamano: 'normal', alt: 'Logo de Banco Credicoop' },
 ];
 
+const CLASES_POR_TAMANO: Record<SponsorVisible['tamano'], string> = {
+  grande: 'max-h-24 sm:max-h-28 max-w-[90%]',
+  normal: 'max-h-20 sm:max-h-24 max-w-[85%]',
+};
 
-export default function Sponsors() {
+
+export default function SponsorShowcase({ sponsors }: { sponsors?: SponsorVisible[] | null }) {
+  // Si la consulta fallo (null) se usa el respaldo. Si devolvio una lista
+  // vacia se respeta: puede ser que los hayan dado de baja a proposito.
+  const lista = sponsors ?? SPONSORS_RESPALDO;
 
   return (
 
@@ -207,11 +203,11 @@ export default function Sponsors() {
           "
         >
 
-          {SPONSORS.map((item, index) => (
+          {lista.map((item, index) => (
 
             <motion.div
 
-              key={item.name}
+              key={item.nombre}
 
               initial={{
                 opacity: 0,
@@ -282,7 +278,7 @@ export default function Sponsors() {
 
                   src={item.logo}
 
-                  alt={item.name}
+                  alt={item.alt}
 
                   width={240}
 
@@ -294,7 +290,7 @@ export default function Sponsors() {
                   transition-all
                   duration-300
                   group-hover:scale-105
-                  ${item.sizeClass}
+                  ${CLASES_POR_TAMANO[item.tamano]}
                   `}
 
                 />
@@ -315,7 +311,7 @@ export default function Sponsors() {
                   group-hover:text-slate-950
                   "
                 >
-                  {item.name}
+                  {item.nombre}
                 </p>
 
                 <span
@@ -329,7 +325,7 @@ export default function Sponsors() {
                   text-[#EB2347]
                   "
                 >
-                  {item.category}
+                  {item.categoria}
                 </span>
 
               </div>
