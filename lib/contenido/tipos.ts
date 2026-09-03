@@ -30,9 +30,9 @@ export const ALQUILER_RESPALDO: CondicionDeAlquiler[] = [
   { titulo: 'Valor Mensual', detalle: '$1.900.000 ARS (Con expensas incluidas)' },
   { titulo: 'Forma de Pago', detalle: 'Pago completo del mes o hasta el 50% (Solo Transferencia)' },
   { titulo: 'Medidas del Puesto', detalle: 'Puesto de 2x2 Mts listo para operar' },
-  { titulo: 'Condicion Fiscal', detalle: 'Monotributo (Minimo Categoria C)' },
-  { titulo: 'Documentacion', detalle: 'DNI original en mano al momento de firmar' },
-  { titulo: 'Cobros Electronicos', detalle: 'POSNET habilitado para ventas con tarjeta' },
+  { titulo: 'Condición Fiscal', detalle: 'Monotributo (Mínimo Categoría C)' },
+  { titulo: 'Documentación', detalle: 'DNI original en mano al momento de firmar' },
+  { titulo: 'Cobros Electrónicos', detalle: 'POSNET habilitado para ventas con tarjeta' },
 ];
 
 export type PreciosDeServicios = {
@@ -46,10 +46,10 @@ export type PreciosDeServicios = {
 
 export const PRECIOS_RESPALDO: PreciosDeServicios = {
   internet: {
-    diario: { precio: '$1.000', moneda: 'ARS', detalle: 'Valido por 24 horas para 1 dispositivo.' },
-    mensual: { precio: '$10.000', moneda: 'ARS', detalle: '30 dias corridos para locatarios y personal.' },
+    diario: { precio: '$1.000', moneda: 'ARS', detalle: 'Válido por 24 horas para 1 dispositivo.' },
+    mensual: { precio: '$10.000', moneda: 'ARS', detalle: '30 días corridos para locatarios y personal.' },
   },
-  estacionamiento: { precio: '$10.000', moneda: 'ARS', titulo: 'Estadia Completa' },
+  estacionamiento: { precio: '$10.000', moneda: 'ARS', titulo: 'Estadía Completa' },
   alquiler: ALQUILER_RESPALDO,
 };
 
@@ -63,17 +63,17 @@ export type DatosDeContacto = {
 };
 
 export const CONTACTO_RESPALDO: DatosDeContacto = {
-  direccion: 'Rene Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina',
+  direccion: 'René Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina',
   email: 'contacto.urku@gmail.com',
-  horarios: 'Lunes, miercoles y sabado de 7:00 a 14:00 hs.',
+  horarios: 'Lunes, miércoles y sábado de 7:00 a 14:00 hs.',
   whatsapp: {
     numero: '541124240338',
     visible: '+54 11 2424-0338',
-    mensaje: 'Hola Feria Urkupina, quisiera realizar una consulta.',
+    mensaje: 'Hola Feria Urkupiña, quisiera realizar una consulta.',
   },
   whatsappAlquiler: {
     numero: '541168615707',
-    mensaje: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupina',
+    mensaje: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupiña',
   },
   redes: {
     instagram: 'https://www.instagram.com/urkupina.s.a/?hl=es',

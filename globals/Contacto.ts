@@ -20,7 +20,7 @@ export const Contacto: GlobalConfig = {
       type: 'textarea',
       required: true,
       defaultValue:
-        'Rene Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina',
+        'René Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina',
       label: 'Direccion del predio',
     },
     {
@@ -34,7 +34,7 @@ export const Contacto: GlobalConfig = {
       name: 'horarios',
       type: 'text',
       required: true,
-      defaultValue: 'Lunes, miercoles y sabado de 7:00 a 14:00 hs.',
+      defaultValue: 'Lunes, miércoles y sábado de 7:00 a 14:00 hs.',
       label: 'Horario de atencion',
     },
     {
@@ -61,7 +61,7 @@ export const Contacto: GlobalConfig = {
           name: 'mensaje',
           type: 'text',
           required: true,
-          defaultValue: 'Hola Feria Urkupina, quisiera realizar una consulta.',
+          defaultValue: 'Hola Feria Urkupiña, quisiera realizar una consulta.',
           label: 'Mensaje predefinido',
           admin: { description: 'Es el texto que aparece ya escrito cuando alguien abre el chat.' },
         },
@@ -87,7 +87,7 @@ export const Contacto: GlobalConfig = {
           name: 'mensaje',
           type: 'text',
           required: true,
-          defaultValue: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupina',
+          defaultValue: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupiña',
           label: 'Mensaje predefinido',
         },
       ],

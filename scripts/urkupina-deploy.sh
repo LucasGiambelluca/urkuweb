@@ -18,6 +18,12 @@ npm ci
 # arranca, no encuentra el build de produccion y pm2 la deja en errored.
 echo "==> Migraciones de base"
 set -a; . ./.env; set +a
+# NODE_ENV=production es obligatorio: sin esta variable, el adaptador de
+# Postgres de Payload entra en modo desarrollo y EMPUJA el esquema directo
+# contra la base en vez de aplicar las migraciones, dejando una fila "dev"
+# con batch -1 y las migraciones sin registrar. Paso en produccion el
+# 2026-09-03.
+export NODE_ENV=production
 npx payload migrate
 
 echo "==> Build"
