@@ -30,7 +30,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: ' - Paseo Urkupina',
+      // Sin espacio inicial: Payload ya separa el titulo del sufijo.
+      titleSuffix: '- Paseo Urkupina',
       icons: [{ rel: 'icon', type: 'image/png', url: '/icon.png' }],
     },
   },
