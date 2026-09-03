@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import sharp from 'sharp';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -30,6 +31,9 @@ export default buildConfig({
   },
   collections: [Users, Categories, Media, Posts],
   editor: lexicalEditor({}),
+  // Necesario para el redimensionado de imagenes que pide collections/Media.ts
+  // (miniatura y tarjeta). Sin esto, subir el logo de un sponsor falla.
+  sharp,
   secret: payloadSecret,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
