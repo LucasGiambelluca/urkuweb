@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { supabase } from "@/lib/supabase";
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { getCategoryStyle } from "@/lib/constants/blog";
@@ -90,34 +89,13 @@ export default function NewsFeed() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
+  // Provisorio: hasta la Fase 4 este bloque muestra las novedades de respaldo.
+  // Antes consultaba Supabase directo desde el navegador, pero esas credenciales
+  // estan vencidas y la consulta fallaba en silencio, cayendo igual al respaldo.
+  // En la Fase 4 pasa a recibir los posts por props desde el servidor.
   useEffect(() => {
-    async function loadPosts() {
-      try {
-        const { data } = await supabase
-          .from("posts")
-          .select("*")
-          .order("id", { ascending: false })
-          .limit(6);
-
-        if (data && data.length > 0) {
-          const categoryCycle = ["Obras", "Cultura", "Deportes", "Eventos"];
-          const formatted = data.map((item: any, idx: number) => ({
-            ...item,
-            category: item.category || categoryCycle[idx % categoryCycle.length],
-            isUpcoming: item.isUpcoming ?? (idx < 2 || item.category === "Próximamente"),
-            image: item.image || fallbackPosts[idx % fallbackPosts.length].image,
-          }));
-          setPosts(formatted);
-        } else {
-          setPosts(fallbackPosts);
-        }
-      } catch (err) {
-        setPosts(fallbackPosts);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPosts();
+    setPosts(fallbackPosts);
+    setLoading(false);
   }, []);
 
 

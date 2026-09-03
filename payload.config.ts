@@ -1,7 +1,6 @@
 import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import { s3Storage } from '@payloadcms/storage-s3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,6 +14,13 @@ const dirname = path.dirname(filename);
 
 const connectionString = process.env.DATABASE_URL || '';
 
+// Sin secreto no se arranca. El valor por defecto que habia aca era publico:
+// cualquiera que leyera el repositorio podia firmar sesiones validas.
+const payloadSecret = process.env.PAYLOAD_SECRET;
+if (!payloadSecret) {
+  throw new Error('Falta PAYLOAD_SECRET en el entorno.');
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -24,31 +30,15 @@ export default buildConfig({
   },
   collections: [Users, Categories, Media, Posts],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || 'fallback-secret-key-change-in-production-12345',
+  secret: payloadSecret,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  // Postgres corre en la misma maquina y se accede por loopback, asi que no
+  // lleva SSL. El condicional anterior lo activaba solo para Supabase.
   db: postgresAdapter({
     pool: {
       connectionString,
-      ssl: connectionString.includes('supabase') ? { rejectUnauthorized: false } : undefined,
     },
   }),
-  plugins: [
-    s3Storage({
-      collections: {
-        media: true,
-      },
-      bucket: process.env.SUPABASE_S3_BUCKET || 'blog-images',
-      config: {
-        credentials: {
-          accessKeyId: process.env.SUPABASE_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.SUPABASE_SECRET_ACCESS_KEY || '',
-        },
-        region: process.env.SUPABASE_S3_REGION || 'us-east-1',
-        endpoint: process.env.SUPABASE_S3_ENDPOINT,
-        forcePathStyle: true,
-      },
-    }),
-  ],
 });
