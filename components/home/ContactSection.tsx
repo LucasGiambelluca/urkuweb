@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, AlertCircle, MessageCir
 import { motion } from "framer-motion";
 import { enviarConsulta } from "@/app/actions/consultas";
 import { estadoInicial } from "@/lib/consultas/estado";
+import { enlaceWhatsapp, type DatosDeContacto } from "@/lib/contenido/tipos";
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -34,7 +35,7 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default function ContactSection() {
+export default function ContactSection({ contacto }: { contacto: DatosDeContacto }) {
   const [resultado, accionEnviar, enviando] = useActionState(enviarConsulta, estadoInicial);
 
   const errors = resultado.errores;
@@ -295,7 +296,7 @@ export default function ContactSection() {
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-muted block">Dirección Predio</span>
                     <p className="text-sm font-semibold text-foreground mt-0.5 leading-snug">
-                      René Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina
+                      {contacto.direccion}
                     </p>
                   </div>
                 </div>
@@ -308,10 +309,10 @@ export default function ContactSection() {
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-muted block">Correo Electrónico</span>
                     <a
-                      href="mailto:contacto.urku@gmail.com"
+                      href={`mailto:${contacto.email}`}
                       className="text-sm font-semibold text-foreground hover:text-[#EB2347] transition-colors mt-0.5 block"
                     >
-                      contacto.urku@gmail.com
+                      {contacto.email}
                     </a>
                   </div>
                 </div>
@@ -327,12 +328,12 @@ export default function ContactSection() {
                       Atención Directa & WhatsApp
                     </span>
                     <a
-                      href="https://wa.me/541124240338?text=Hola%20Feria%20Urkupi%C3%B1a%2C%20quisiera%20realizar%20una%20consulta."
+                      href={enlaceWhatsapp(contacto.whatsapp)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base font-bold text-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors mt-0.5 inline-flex items-center gap-2 group"
                     >
-                      <span>+54 11 2424-0338</span>
+                      <span>{contacto.whatsapp.visible}</span>
                       <span className="inline-flex items-center gap-1 text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full group-hover:bg-emerald-500 group-hover:text-white transition-all">
                         WhatsApp Web ↗
                       </span>
@@ -351,7 +352,7 @@ export default function ContactSection() {
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-muted block">Horario comercial</span>
                     <p className="text-sm font-semibold text-foreground mt-0.5">
-                      Lunes, miércoles y sábado de 7:00 a 14:00 hs.
+                      {contacto.horarios}
                     </p>
 
                   </div>
@@ -366,7 +367,7 @@ export default function ContactSection() {
 
                 <div className="flex items-center gap-3">
                   <a
-                    href="https://www.instagram.com/urkupina.s.a/?hl=es"
+                    href={contacto.redes.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram oficial de Urkupiña"
@@ -376,7 +377,7 @@ export default function ContactSection() {
                   </a>
 
                   <a
-                    href="https://www.facebook.com/urkupinaSA/?locale=es_LA"
+                    href={contacto.redes.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Facebook oficial de Urkupiña"
@@ -386,7 +387,7 @@ export default function ContactSection() {
                   </a>
 
                   <a
-                    href="https://youtube.com/@ULIVE_STREAM"
+                    href={contacto.redes.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Canal ULIVE Stream de Urkupiña"

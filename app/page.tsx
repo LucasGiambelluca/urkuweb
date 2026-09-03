@@ -4,8 +4,11 @@ import config from '@payload-config';
 import {
   NUMEROS_RESPALDO,
   PRECIOS_RESPALDO,
+  CONTACTO_RESPALDO,
+  ALQUILER_RESPALDO,
   type NumerosDelPredio,
   type PreciosDeServicios,
+  type DatosDeContacto,
 } from "@/lib/contenido/tipos";
 
 import Navbar from "@/components/layout/Navbar";
@@ -79,6 +82,7 @@ async function obtenerPrecios(): Promise<PreciosDeServicios | null> {
   try {
     const payload = await getPayload({ config });
     const servicios = await payload.findGlobal({ slug: 'servicios' });
+    const condiciones = servicios.alquiler?.condiciones;
     return {
       internet: {
         diario: {
@@ -97,6 +101,13 @@ async function obtenerPrecios(): Promise<PreciosDeServicios | null> {
         moneda: servicios.estacionamiento.moneda,
         titulo: servicios.estacionamiento.titulo,
       },
+      alquiler:
+        condiciones && condiciones.length > 0
+          ? condiciones.map((condicion) => ({
+              titulo: condicion.titulo,
+              detalle: condicion.detalle,
+            }))
+          : ALQUILER_RESPALDO,
     };
   } catch (error) {
     console.error('[home] no se pudieron leer los precios:', error);
@@ -104,14 +115,41 @@ async function obtenerPrecios(): Promise<PreciosDeServicios | null> {
   }
 }
 
+async function obtenerContacto(): Promise<DatosDeContacto | null> {
+  try {
+    const payload = await getPayload({ config });
+    const contacto = await payload.findGlobal({ slug: 'contacto' });
+    return {
+      direccion: contacto.direccion,
+      email: contacto.email,
+      horarios: contacto.horarios,
+      whatsapp: {
+        numero: contacto.whatsapp.numero,
+        visible: contacto.whatsapp.visible,
+        mensaje: contacto.whatsapp.mensaje,
+      },
+      redes: {
+        instagram: contacto.redes?.instagram ?? '',
+        facebook: contacto.redes?.facebook ?? '',
+        youtube: contacto.redes?.youtube ?? '',
+      },
+    };
+  } catch (error) {
+    console.error('[home] no se pudo leer el contacto:', error);
+    return null;
+  }
+}
+
 export default async function Home() {
-  const [sponsors, numeros, precios] = await Promise.all([
+  const [sponsors, numeros, precios, contacto] = await Promise.all([
     obtenerSponsors(),
     obtenerNumeros(),
     obtenerPrecios(),
+    obtenerContacto(),
   ]);
   const cifras = numeros ?? NUMEROS_RESPALDO;
   const tarifas = precios ?? PRECIOS_RESPALDO;
+  const datosContacto = contacto ?? CONTACTO_RESPALDO;
 
   return (
     <>
@@ -128,9 +166,9 @@ export default async function Home() {
         <CommerceSection numeros={cifras} />
         <SponsorShowcase sponsors={sponsors} />
         <NewsFeed />
-        <ContactSection />
+        <ContactSection contacto={datosContacto} />
       </main>
-      <SiteFooter />
+      <SiteFooter contacto={datosContacto} />
     </>
   );
 }

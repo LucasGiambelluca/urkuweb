@@ -24,12 +24,24 @@ export const sinMas = (valor: string): string => valor.replace(/\+$/, '');
 
 export type PrecioSimple = { precio: string; moneda: string };
 
+export type CondicionDeAlquiler = { titulo: string; detalle: string };
+
+export const ALQUILER_RESPALDO: CondicionDeAlquiler[] = [
+  { titulo: 'Valor Mensual', detalle: '$1.900.000 ARS (Con expensas incluidas)' },
+  { titulo: 'Forma de Pago', detalle: 'Pago completo del mes o hasta el 50% (Solo Transferencia)' },
+  { titulo: 'Medidas del Puesto', detalle: 'Puesto de 2x2 Mts listo para operar' },
+  { titulo: 'Condicion Fiscal', detalle: 'Monotributo (Minimo Categoria C)' },
+  { titulo: 'Documentacion', detalle: 'DNI original en mano al momento de firmar' },
+  { titulo: 'Cobros Electronicos', detalle: 'POSNET habilitado para ventas con tarjeta' },
+];
+
 export type PreciosDeServicios = {
   internet: {
     diario: PrecioSimple & { detalle: string };
     mensual: PrecioSimple & { detalle: string };
   };
   estacionamiento: PrecioSimple & { titulo: string };
+  alquiler: CondicionDeAlquiler[];
 };
 
 export const PRECIOS_RESPALDO: PreciosDeServicios = {
@@ -38,4 +50,38 @@ export const PRECIOS_RESPALDO: PreciosDeServicios = {
     mensual: { precio: '$10.000', moneda: 'ARS', detalle: '30 dias corridos para locatarios y personal.' },
   },
   estacionamiento: { precio: '$10.000', moneda: 'ARS', titulo: 'Estadia Completa' },
+  alquiler: ALQUILER_RESPALDO,
 };
+
+export type DatosDeContacto = {
+  direccion: string;
+  email: string;
+  horarios: string;
+  whatsapp: { numero: string; visible: string; mensaje: string };
+  redes: { instagram: string; facebook: string; youtube: string };
+};
+
+export const CONTACTO_RESPALDO: DatosDeContacto = {
+  direccion: 'Rene Gonzalo Rojas Paz, Ingeniero Budge, Provincia de Buenos Aires, Argentina',
+  email: 'contacto.urku@gmail.com',
+  horarios: 'Lunes, miercoles y sabado de 7:00 a 14:00 hs.',
+  whatsapp: {
+    numero: '541124240338',
+    visible: '+54 11 2424-0338',
+    mensaje: 'Hola Feria Urkupina, quisiera realizar una consulta.',
+  },
+  redes: {
+    instagram: 'https://www.instagram.com/urkupina.s.a/?hl=es',
+    facebook: 'https://www.facebook.com/urkupinaSA/?locale=es_LA',
+    youtube: 'https://youtube.com/@ULIVE_STREAM',
+  },
+};
+
+/**
+ * Arma el enlace de WhatsApp con el mensaje ya escrito.
+ *
+ * Existe para que el enlace se construya en un solo lugar: la misma URL con
+ * el mismo texto codificado a mano estaba repetida en tres archivos.
+ */
+export const enlaceWhatsapp = (whatsapp: DatosDeContacto['whatsapp']): string =>
+  `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;

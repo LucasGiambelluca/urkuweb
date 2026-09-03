@@ -38,16 +38,6 @@ const AVAILABLE_BOOTHS = [
   { sector: "Sector A6", row: "Fila 12", booth: "Puesto 8", status: "Disponible" },
 ];
 
-// Requirements for Renting from Attached Image 2
-const RENTAL_REQUIREMENTS = [
-  { title: "Valor Mensual", detail: "$1.900.000 ARS (Con expensas incluidas)" },
-  { title: "Forma de Pago", detail: "Pago completo del mes o hasta el 50% (Solo Transferencia)" },
-  { title: "Medidas del Puesto", detail: "Puesto de 2x2 Mts listo para operar" },
-  { title: "Condición Fiscal", detail: "Monotributo (Mínimo Categoría C)" },
-  { title: "Documentación", detail: "DNI original en mano al momento de firmar" },
-  { title: "Cobros Electrónicos", detail: "POSNET habilitado para ventas con tarjeta" },
-];
-
 // Payment Calendar Schedule from Attached Image 2
 const PAYMENT_SCHEDULE = [
   { days: "Días 1 al 5", Concept: "Pago del Alquiler mensual" },
@@ -313,13 +303,13 @@ export default function ServicesHubSection({ precios }: { precios: PreciosDeServ
                     </h4>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {RENTAL_REQUIREMENTS.map((req, idx) => (
+                      {precios.alquiler.map((condicion, idx) => (
                         <div key={idx} className="p-4 rounded-2xl bg-white/5">
                           <span className="text-xs uppercase font-mono tracking-widest text-[#EB2347] font-bold block mb-1">
-                            {req.title}
+                            {condicion.titulo}
                           </span>
                           <span className="text-sm sm:text-base font-semibold text-white leading-snug block">
-                            {req.detail}
+                            {condicion.detalle}
                           </span>
                         </div>
                       ))}

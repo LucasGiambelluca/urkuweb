@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { MessageCircle, X, Sparkles, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { enlaceWhatsapp, type DatosDeContacto } from "@/lib/contenido/tipos";
 
-export default function FloatingWhatsApp() {
+export default function FloatingWhatsApp({ whatsapp }: { whatsapp: DatosDeContacto['whatsapp'] }) {
   const [isOpen, setIsOpen] = useState(false);
-  const whatsappUrl = "https://wa.me/541124240338?text=Hola%20Feria%20Urkupi%C3%B1a%2C%20quisiera%20realizar%20una%20consulta.";
+  const whatsappUrl = enlaceWhatsapp(whatsapp);
 
   return (
     <aside
@@ -106,7 +107,7 @@ export default function FloatingWhatsApp() {
               WhatsApp Oficial
             </span>
             <span className="text-sm font-bold text-white mt-1 leading-none">
-              +54 11 2424-0338
+              {whatsapp.visible}
             </span>
           </div>
 

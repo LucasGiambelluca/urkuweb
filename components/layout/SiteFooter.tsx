@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Megaphone } from "lucide-react";
 import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
+import { enlaceWhatsapp, type DatosDeContacto } from "@/lib/contenido/tipos";
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -32,7 +33,7 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default function SiteFooter() {
+export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) {
 
   return (
     <footer
@@ -160,7 +161,7 @@ export default function SiteFooter() {
             {/* Social Icons Row (Painted Default State with Inverted Hover) */}
             <div className="pt-2 flex items-center gap-3">
               <a
-                href="https://www.instagram.com/urkupina.s.a/?hl=es"
+                href={contacto.redes.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram oficial de Urkupiña"
@@ -170,7 +171,7 @@ export default function SiteFooter() {
               </a>
 
               <a
-                href="https://www.facebook.com/urkupinaSA/?locale=es_LA"
+                href={contacto.redes.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook oficial de Urkupiña"
@@ -180,7 +181,7 @@ export default function SiteFooter() {
               </a>
 
               <a
-                href="https://youtube.com/@ULIVE_STREAM"
+                href={contacto.redes.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Canal ULIVE Stream de Urkupiña en YouTube"
@@ -292,20 +293,20 @@ export default function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/541124240338?text=Hola%20Feria%20Urkupi%C3%B1a%2C%20quisiera%20realizar%20una%20consulta."
+                  href={enlaceWhatsapp(contacto.whatsapp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-400 transition-colors block break-words"
                 >
-                  WhatsApp: +54 11 2424-0338
+                  WhatsApp: {contacto.whatsapp.visible}
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:contacto.urku@gmail.com"
+                  href={`mailto:${contacto.email}`}
                   className="hover:text-white transition-colors block break-all"
                 >
-                  contacto.urku@gmail.com
+                  {contacto.email}
                 </a>
               </li>
             </ul>
@@ -335,7 +336,7 @@ export default function SiteFooter() {
       </div>
 
       {/* Floating WhatsApp Action Widget (Matches Bottom-Right Corner in Image) */}
-      <FloatingWhatsApp />
+      <FloatingWhatsApp whatsapp={contacto.whatsapp} />
     </footer>
   );
 }
