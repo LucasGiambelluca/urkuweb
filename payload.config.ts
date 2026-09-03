@@ -10,6 +10,7 @@ import { Users } from './collections/Users';
 import { Categories } from './collections/Categories';
 import { Media } from './collections/Media';
 import { Posts } from './collections/Posts';
+import { Consultas } from './collections/Consultas';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -35,7 +36,7 @@ export default buildConfig({
       icons: [{ rel: 'icon', type: 'image/png', url: '/icon.png' }],
     },
   },
-  collections: [Users, Categories, Media, Posts],
+  collections: [Users, Categories, Media, Posts, Consultas],
   editor: lexicalEditor({}),
   // Necesario para el redimensionado de imagenes que pide collections/Media.ts
   // (miniatura y tarjeta). Sin esto, subir el logo de un sponsor falla.

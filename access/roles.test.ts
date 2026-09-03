@@ -4,6 +4,7 @@ import {
   campoSoloAdmin,
   soloAdmin,
   soloAdminSalvoSiMismo,
+  soloAutenticado,
 } from './roles';
 
 const admin = { id: 1, rol: 'admin' as const };
@@ -65,5 +66,19 @@ describe('campoSoloAdmin', () => {
 
   it('impide que un editor se ascienda', () => {
     expect(campoSoloAdmin(contexto(editor))).toBe(false);
+  });
+});
+
+describe('soloAutenticado', () => {
+  it('deja pasar a cualquiera con sesion', () => {
+    expect(soloAutenticado(contexto(editor))).toBe(true);
+  });
+
+  it('deja pasar al admin', () => {
+    expect(soloAutenticado(contexto(admin))).toBe(true);
+  });
+
+  it('rechaza al anonimo', () => {
+    expect(soloAutenticado(contexto(null))).toBe(false);
   });
 });

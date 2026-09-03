@@ -12,6 +12,9 @@ const comoUsuario = (user: unknown): UsuarioConRol | null =>
 
 const esAdmin = (user: unknown): boolean => comoUsuario(user)?.rol === 'admin';
 
+/** Cualquiera con sesion iniciada, sin importar el rol. */
+export const soloAutenticado: Access = ({ req: { user } }) => Boolean(user);
+
 /** Solo administradores. */
 export const soloAdmin: Access = ({ req: { user } }) => esAdmin(user);
 
