@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import UliveLogo from "@/components/ui/UliveLogo";
 
+
 const PROGRAMS = [
   {
     icon: Radio,
@@ -20,10 +21,10 @@ const PROGRAMS = [
   },
 ];
 
-export default function StreamingPreview() {
+export default function StreamingPreview({ canalYoutube }: { canalYoutube: string }) {
   const [isPlaying, setIsPlaying] = useState(false); // NO Autoplay on load
   const [isMuted, setIsMuted] = useState(false);
-  const channelUrl = "https://youtube.com/@ULIVE_STREAM";
+  const channelUrl = canalYoutube;
 
   const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);

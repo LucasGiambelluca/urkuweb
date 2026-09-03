@@ -15,14 +15,13 @@ describe('enlaceWhatsapp', () => {
   it('arma el enlace con el mensaje codificado', () => {
     const url = enlaceWhatsapp({
       numero: '541124240338',
-      visible: '+54 11 2424-0338',
       mensaje: 'Hola, quiero consultar',
     });
     expect(url).toBe('https://wa.me/541124240338?text=Hola%2C%20quiero%20consultar');
   });
 
   it('codifica los caracteres con acento', () => {
-    const url = enlaceWhatsapp({ numero: '1', visible: '1', mensaje: 'Urkupiña' });
+    const url = enlaceWhatsapp({ numero: '1', mensaje: 'Urkupiña' });
     expect(url).toContain('Urkupi%C3%B1a');
   });
 });

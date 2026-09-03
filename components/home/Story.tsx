@@ -4,9 +4,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
+import type { NumerosDelPredio } from "@/lib/contenido/tipos";
 
 
-export default function Story() {
+export default function Story({ numeros }: { numeros: NumerosDelPredio }) {
 
   return (
 
@@ -258,7 +259,7 @@ export default function Story() {
                 "
               >
 
-                30+
+                {numeros.aniosTrayectoria}
 
               </span>
 

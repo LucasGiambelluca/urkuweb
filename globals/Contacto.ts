@@ -68,6 +68,31 @@ export const Contacto: GlobalConfig = {
       ],
     },
     {
+      name: 'whatsappAlquiler',
+      type: 'group',
+      label: 'WhatsApp comercial de alquiler',
+      admin: {
+        description:
+          'Es un contacto distinto al general: atiende consultas de alquiler de puestos. Aparece en la seccion de servicios.',
+      },
+      fields: [
+        {
+          name: 'numero',
+          type: 'text',
+          required: true,
+          defaultValue: '541168615707',
+          label: 'Numero, solo digitos',
+        },
+        {
+          name: 'mensaje',
+          type: 'text',
+          required: true,
+          defaultValue: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupina',
+          label: 'Mensaje predefinido',
+        },
+      ],
+    },
+    {
       name: 'redes',
       type: 'group',
       label: 'Redes sociales',

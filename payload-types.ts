@@ -650,6 +650,13 @@ export interface Contacto {
      */
     mensaje: string;
   };
+  /**
+   * Es un contacto distinto al general: atiende consultas de alquiler de puestos. Aparece en la seccion de servicios.
+   */
+  whatsappAlquiler: {
+    numero: string;
+    mensaje: string;
+  };
   redes?: {
     instagram?: string | null;
     facebook?: string | null;
@@ -730,6 +737,12 @@ export interface ContactoSelect<T extends boolean = true> {
     | {
         numero?: T;
         visible?: T;
+        mensaje?: T;
+      };
+  whatsappAlquiler?:
+    | T
+    | {
+        numero?: T;
         mensaje?: T;
       };
   redes?:

@@ -58,6 +58,7 @@ export type DatosDeContacto = {
   email: string;
   horarios: string;
   whatsapp: { numero: string; visible: string; mensaje: string };
+  whatsappAlquiler: { numero: string; mensaje: string };
   redes: { instagram: string; facebook: string; youtube: string };
 };
 
@@ -69,6 +70,10 @@ export const CONTACTO_RESPALDO: DatosDeContacto = {
     numero: '541124240338',
     visible: '+54 11 2424-0338',
     mensaje: 'Hola Feria Urkupina, quisiera realizar una consulta.',
+  },
+  whatsappAlquiler: {
+    numero: '541168615707',
+    mensaje: 'Hola! Quiero consultar por el alquiler de un puesto en Paseo Urkupina',
   },
   redes: {
     instagram: 'https://www.instagram.com/urkupina.s.a/?hl=es',
@@ -83,5 +88,7 @@ export const CONTACTO_RESPALDO: DatosDeContacto = {
  * Existe para que el enlace se construya en un solo lugar: la misma URL con
  * el mismo texto codificado a mano estaba repetida en tres archivos.
  */
-export const enlaceWhatsapp = (whatsapp: DatosDeContacto['whatsapp']): string =>
-  `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+export const enlaceWhatsapp = (whatsapp: {
+  numero: string;
+  mensaje: string;
+}): string => `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;

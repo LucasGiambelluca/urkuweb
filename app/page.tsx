@@ -128,6 +128,10 @@ async function obtenerContacto(): Promise<DatosDeContacto | null> {
         visible: contacto.whatsapp.visible,
         mensaje: contacto.whatsapp.mensaje,
       },
+      whatsappAlquiler: {
+        numero: contacto.whatsappAlquiler.numero,
+        mensaje: contacto.whatsappAlquiler.mensaje,
+      },
       redes: {
         instagram: contacto.redes?.instagram ?? '',
         facebook: contacto.redes?.facebook ?? '',
@@ -157,11 +161,11 @@ export default async function Home() {
       <main id="main">
         <Hero />
         <HeroStats numeros={cifras} />
-        <Story />
+        <Story numeros={cifras} />
         <Timeline />
-        <StreamingPreview />
+        <StreamingPreview canalYoutube={datosContacto.redes.youtube} />
         <VisitSection numeros={cifras} />
-        <ServicesHubSection precios={tarifas} />
+        <ServicesHubSection precios={tarifas} numeros={cifras} contacto={datosContacto} />
         <ImpactGrid numeros={cifras} />
         <CommerceSection numeros={cifras} />
         <SponsorShowcase sponsors={sponsors} />

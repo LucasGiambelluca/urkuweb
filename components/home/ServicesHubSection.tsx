@@ -25,7 +25,8 @@ import {
   X
 } from "lucide-react";
 import Button from "@/components/ui/Button";
-import type { PreciosDeServicios } from "@/lib/contenido/tipos";
+import { enlaceWhatsapp, sinMas } from "@/lib/contenido/tipos";
+import type { DatosDeContacto, NumerosDelPredio, PreciosDeServicios } from "@/lib/contenido/tipos";
 
 // Puestos Libres Data from Attached Image 1
 const AVAILABLE_BOOTHS = [
@@ -45,7 +46,15 @@ const PAYMENT_SCHEDULE = [
   { days: "Días 10 al 15", Concept: "Segundo Pago de Expensas" },
 ];
 
-export default function ServicesHubSection({ precios }: { precios: PreciosDeServicios }) {
+export default function ServicesHubSection({
+  precios,
+  numeros,
+  contacto,
+}: {
+  precios: PreciosDeServicios;
+  numeros: NumerosDelPredio;
+  contacto: DatosDeContacto;
+}) {
   const [activeTab, setActiveTab] = useState<"puestos" | "estacionamiento" | "internet">("internet");
   const [isVoucherModalOpen, setIsVoucherModalOpen] = useState(false);
 
@@ -225,13 +234,13 @@ export default function ServicesHubSection({ precios }: { precios: PreciosDeServ
                       Sos Emprendedor? Vení a Urkupiña y Alquilá tu Puesto
                     </h3>
                     <p className="mt-4 text-base sm:text-lg text-white/80 leading-relaxed font-normal">
-                      Sumate al paseo textil más grande del país. Formá parte de una comunidad comercial con más de 5.000 clientes diarios y seguridad garantizada.
+                      Sumate al paseo textil más grande del país. Formá parte de una comunidad comercial con más de {sinMas(numeros.personasDiarias)} clientes diarios y seguridad garantizada.
                     </p>
                   </div>
 
                   <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-center gap-4">
                     <a
-                      href="https://wa.me/541168615707?text=Hola!%20Quiero%20consultar%20por%20el%20alquiler%20de%20un%20puesto%20en%20Paseo%20Urkupi%C3%B1a"
+                      href={enlaceWhatsapp(contacto.whatsappAlquiler)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-3 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] px-8 py-4 text-base font-extrabold uppercase tracking-wider text-white transition-all hover:scale-105 shadow-lg shadow-[#25D366]/30 w-full sm:w-auto justify-center"
