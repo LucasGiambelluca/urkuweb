@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none" class="h-10 w-auto">
+  <!-- ULIVE Emblem: Sleek U with red play accent -->
+  <rect x="4" y="8" width="44" height="44" rx="12" fill="#243A60" />
+  <path d="M18 20V32C18 36.4183 21.5817 40 26 40V40C30.4183 40 34 36.4183 34 32V20" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" />
+  <circle cx="34" cy="20" r="4" fill="#EB2347" />
+  
+  <!-- ULIVE Text -->
+  <text x="58" y="42" font-family="'Barlow Condensed', sans-serif" font-size="34" font-weight="900" letter-spacing="2" fill="#FFFFFF">
+    U<tspan fill="#EB2347">LIVE</tspan>
+  </text>
+</svg>

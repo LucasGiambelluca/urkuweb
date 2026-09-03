@@ -1,0 +1,419 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, [data-theme="dark"], .dark *));
+
+/* ─── Font theme tokens & Semantic Colors ──────────────────────────── */
+@theme {
+  /* ── Font stack ─────────────────────────────────────────────── */
+  --font-display: var(--font-barlow-condensed);
+  /* Hero headings, section titles */
+  --font-sans: var(--font-dm-sans);
+  /* Body text, UI labels          */
+
+  /* Map Tailwind classes to our CSS variables */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border-subtle: var(--border-subtle);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-separator: var(--separator);
+
+  --color-navy: #273961;
+  --color-navy-dark: #1B2A49;
+  --color-accent: #EB2347;
+  --color-ink: #141C2E;
+  --color-fg2: #505B72;
+  --color-fg3: #7C879B;
+
+  --color-brand-navy: #273961;
+  --color-brand-navy-light: #2E4A7A;
+  --color-brand-navy-dark: #1B2A49;
+
+  --color-brand-red: #EB2347;
+  --color-brand-red-dark: #C41A3A;
+
+  --radius-frame: clamp(20px, 2.6vw, 34px);
+  --radius-lg: 20px;
+  --radius-md: 15px;
+}
+
+/* ─── Base styles & Theme Variables ──────────────────────────────── */
+@layer base {
+
+  :root,
+  .light,
+  [data-theme="light"] {
+    /* Light Mode (Default) */
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --muted: #475569;
+    --subtle: #94a3b8;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --separator: #fefefe;
+  }
+
+  .dark,
+  [data-theme="dark"] {
+    /* Dark Mode */
+    --background: #080C14;
+    --foreground: #F8FAFC;
+    --muted: #94A3B8;
+    --subtle: #64748B;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --card-bg: #0e1626;
+    --card-border: rgba(255, 255, 255, 0.1);
+    --separator: #100c16;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-red);
+    color: #ffffff;
+  }
+
+  /* Custom adaptive scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-red);
+  }
+}
+
+/* ─── Global heading typography ─────────────────────────────── */
+/* All section headings use Barlow Condensed automatically.     */
+/* Override per-element only when you need DM Sans for labels.  */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-barlow-condensed), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ─── animations.css ─────────────────────────────────────────────── */
+
+@keyframes pulseDot {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes floatCard1 {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(1deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(-1deg);
+  }
+}
+
+@keyframes floatCard2 {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes floatCard3 {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes orbitSpinCounter {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes particleFloat {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(20px, -30px) scale(1.2);
+  }
+
+  50% {
+    transform: translate(-10px, -50px) scale(0.8);
+  }
+
+  75% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+}
+
+@keyframes scrollPulse {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(48px);
+    opacity: 0;
+  }
+}
+
+/* ─── Hero element helper classes ────────────────────────────────── */
+.hero-particle {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: particleFloat 15s ease-in-out infinite;
+}
+
+.hero-garment {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-garment:hover {
+  transform: translateY(-8px);
+}
+
+/* ─── Accessibility & WCAG AA Utilities ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid #EB2347 !important;
+  outline-offset: 2px !important;
+}
+
+/* Skip to main content link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  background-color: #EB2347;
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 10px 25px rgba(235, 35, 71, 0.4);
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ─── Respetar prefers-reduced-motion ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ─── Global Spacing Standardization ────── */
+/* Between sections: py-16 (64px) mobile, py-24 (96px) desktop */
+.section-sm,
+.section-md,
+.section-lg,
+.section-xl,
+.footer-spacing {
+  padding-top: 4rem;
+  /* 64px mobile */
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+
+  .section-sm,
+  .section-md,
+  .section-lg,
+  .section-xl,
+  .footer-spacing {
+    padding-top: 6rem;
+    /* 96px desktop */
+    padding-bottom: 6rem;
+  }
+}
+
+/* Page horizontal padding: px-6 (24px) mobile, md:px-12 (48px), lg:px-20 (80px) */
+.content-pad {
+  padding-left: 1.5rem;
+  /* px-6 */
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .content-pad {
+    padding-left: 3rem;
+    /* md:px-12 */
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content-pad {
+    padding-left: 5rem;
+    /* lg:px-20 */
+    padding-right: 5rem;
+  }
+}
+
+/* ─── Standardized Image Treatment ────── */
+.site-image {
+  border-radius: 20px;
+  object-fit: cover;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.site-image:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ─── CSS Image Mask Utilities ────── */
+.img-mask-wrapper {
+  -webkit-mask-image: var(--mask-url, url('/images/masks/maskelements.png'));
+  mask-image: var(--mask-url, url('/images/masks/maskelements.png'));
+  -webkit-mask-size: var(--mask-size, cover);
+  mask-size: var(--mask-size, cover);
+  -webkit-mask-repeat: var(--mask-repeat, no-repeat);
+  mask-repeat: var(--mask-repeat, no-repeat);
+  -webkit-mask-position: var(--mask-position, center);
+  mask-position: var(--mask-position, center);
+}
+
+/* ─── Sprite & Mask Element Classes from maskelements.png ───── */
+.sprite-badge-mayoristas {
+  background-image: url('/images/masks/maskelements.png');
+  background-position: -918px -405px;
+  width: 235px;
+  height: 82px;
+  background-repeat: no-repeat;
+}
+
+.sprite-badge-nuevo {
+  background-image: url('/images/masks/maskelements.png');
+  background-position: -774px -367px;
+  width: 126px;
+  height: 106px;
+  background-repeat: no-repeat;
+}
+
+.sprite-callout-oportunidad {
+  background-image: url('/images/masks/maskelements.png');
+  background-position: -28px -861px;
+  width: 229px;
+  height: 109px;
+  background-repeat: no-repeat;
+}
+
+.sprite-callout-promociona {
+  background-image: url('/images/masks/maskelements.png');
+  background-position: -282px -881px;
+  width: 196px;
+  height: 89px;
+  background-repeat: no-repeat;
+}
+
+.sprite-torn-paper {
+  background-image: url('/images/masks/maskelements.png');
+  background-position: -1186px -371px;
+  width: 324px;
+  height: 148px;
+  background-repeat: no-repeat;
+}

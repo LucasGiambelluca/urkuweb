@@ -1,0 +1,13 @@
+# Normaliza los fines de linea: el desarrollo es en Windows y el servidor es Linux.
+# Sin esto, un checkout local convierte todo a CRLF y los archivos dejan de coincidir
+# byte a byte con los de produccion.
+* text=auto eol=lf
+
+# Binarios: git no los toca
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+*.mp4 binary
