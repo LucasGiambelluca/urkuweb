@@ -6,13 +6,7 @@ import MaskedImage from "@/components/ui/MaskedImage";
 import { Clock, MapPin, Bus, Train, Car, Ticket, CheckCircle2, ChevronRight, ShieldCheck, ExternalLink, CreditCard, Maximize2, X, Zap, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
-
-const LEGEND_ITEMS = [
-  { id: "entradas", icon: "🚪", label: "Entradas", desc: "Ingresos principales por Av. Ribera Sur y Virrey de Vevia." },
-  { id: "banos", icon: "🚻", label: "Baños", desc: "Sanitarios públicos higienizados en cada nave de ventas." },
-  { id: "puestos", icon: "🛍️", label: "Puestos", desc: "Más de 2.200 locales de fabricantes textiles directos." },
-  { id: "estacionamiento", icon: "🚗", label: "Estacionamiento", desc: "Playas custodiadas con seguridad privada y monitoreo 24 hs." },
-];
+import { sinMas, type NumerosDelPredio } from "@/lib/contenido/tipos";
 
 const TRANSPORT_OPTIONS = [
   {
@@ -32,10 +26,17 @@ const TRANSPORT_OPTIONS = [
   },
 ];
 
-export default function VisitSection() {
+export default function VisitSection({ numeros }: { numeros: NumerosDelPredio }) {
   const [activeSector, setActiveSector] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const mapsDirectUrl = "https://www.google.com/maps/place/Feria+Urkupi%C3%B1a/@-34.7198672,-58.4735439,17z";
+
+  const LEGEND_ITEMS = [
+    { id: "entradas", icon: "🚪", label: "Entradas", desc: "Ingresos principales por Av. Ribera Sur y Virrey de Vevia." },
+    { id: "banos", icon: "🚻", label: "Baños", desc: "Sanitarios públicos higienizados en cada nave de ventas." },
+    { id: "puestos", icon: "🛍️", label: "Puestos", desc: `Más de ${sinMas(numeros.puestos)} locales de fabricantes textiles directos.` },
+    { id: "estacionamiento", icon: "🚗", label: "Estacionamiento", desc: "Playas custodiadas con seguridad privada y monitoreo 24 hs." },
+  ];
 
   return (
     <section

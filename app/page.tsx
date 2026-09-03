@@ -1,6 +1,13 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
 
+import {
+  NUMEROS_RESPALDO,
+  PRECIOS_RESPALDO,
+  type NumerosDelPredio,
+  type PreciosDeServicios,
+} from "@/lib/contenido/tipos";
+
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import HeroStats from "@/components/home/HeroStats";
@@ -51,22 +58,74 @@ async function obtenerSponsors(): Promise<SponsorVisible[] | null> {
   }
 }
 
+async function obtenerNumeros(): Promise<NumerosDelPredio | null> {
+  try {
+    const payload = await getPayload({ config });
+    const numeros = await payload.findGlobal({ slug: 'numeros' });
+    return {
+      puestos: numeros.puestos,
+      personasDiarias: numeros.personasDiarias,
+      empleos: numeros.empleos,
+      aniosTrayectoria: numeros.aniosTrayectoria,
+      diasActividad: numeros.diasActividad,
+    };
+  } catch (error) {
+    console.error('[home] no se pudieron leer los numeros:', error);
+    return null;
+  }
+}
+
+async function obtenerPrecios(): Promise<PreciosDeServicios | null> {
+  try {
+    const payload = await getPayload({ config });
+    const servicios = await payload.findGlobal({ slug: 'servicios' });
+    return {
+      internet: {
+        diario: {
+          precio: servicios.internet.diario.precio,
+          moneda: servicios.internet.diario.moneda,
+          detalle: servicios.internet.diario.detalle,
+        },
+        mensual: {
+          precio: servicios.internet.mensual.precio,
+          moneda: servicios.internet.mensual.moneda,
+          detalle: servicios.internet.mensual.detalle,
+        },
+      },
+      estacionamiento: {
+        precio: servicios.estacionamiento.precio,
+        moneda: servicios.estacionamiento.moneda,
+        titulo: servicios.estacionamiento.titulo,
+      },
+    };
+  } catch (error) {
+    console.error('[home] no se pudieron leer los precios:', error);
+    return null;
+  }
+}
+
 export default async function Home() {
-  const sponsors = await obtenerSponsors();
+  const [sponsors, numeros, precios] = await Promise.all([
+    obtenerSponsors(),
+    obtenerNumeros(),
+    obtenerPrecios(),
+  ]);
+  const cifras = numeros ?? NUMEROS_RESPALDO;
+  const tarifas = precios ?? PRECIOS_RESPALDO;
 
   return (
     <>
       <Navbar />
       <main id="main">
         <Hero />
-        <HeroStats />
+        <HeroStats numeros={cifras} />
         <Story />
         <Timeline />
         <StreamingPreview />
-        <VisitSection />
-        <ServicesHubSection />
-        <ImpactGrid />
-        <CommerceSection />
+        <VisitSection numeros={cifras} />
+        <ServicesHubSection precios={tarifas} />
+        <ImpactGrid numeros={cifras} />
+        <CommerceSection numeros={cifras} />
         <SponsorShowcase sponsors={sponsors} />
         <NewsFeed />
         <ContactSection />

@@ -25,6 +25,7 @@ import {
   X
 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import type { PreciosDeServicios } from "@/lib/contenido/tipos";
 
 // Puestos Libres Data from Attached Image 1
 const AVAILABLE_BOOTHS = [
@@ -54,7 +55,7 @@ const PAYMENT_SCHEDULE = [
   { days: "Días 10 al 15", Concept: "Segundo Pago de Expensas" },
 ];
 
-export default function ServicesHubSection() {
+export default function ServicesHubSection({ precios }: { precios: PreciosDeServicios }) {
   const [activeTab, setActiveTab] = useState<"puestos" | "estacionamiento" | "internet">("internet");
   const [isVoucherModalOpen, setIsVoucherModalOpen] = useState(false);
 
@@ -382,11 +383,11 @@ export default function ServicesHubSection() {
                       Tarifa Oficial
                     </span>
                     <h3 className="font-display text-3xl font-bold uppercase text-white mt-4">
-                      Estadía Completa
+                      {precios.estacionamiento.titulo}
                     </h3>
                     <div className="my-6">
-                      <span className="font-display text-5xl font-black text-white">$10.000</span>
-                      <span className="text-sm font-bold text-white/60 ml-2">ARS</span>
+                      <span className="font-display text-5xl font-black text-white">{precios.estacionamiento.precio}</span>
+                      <span className="text-sm font-bold text-white/60 ml-2">{precios.estacionamiento.moneda}</span>
                     </div>
                     <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal">
                       Acceso libre durante toda la jornada comercial con personal de custodia permanente en todo el predio.
@@ -487,10 +488,10 @@ export default function ServicesHubSection() {
                         ACCESO POR 1 DÍA
                       </span>
                       <div className="font-display text-4xl font-black text-white">
-                        $1.000 <span className="text-xs text-white/60 font-semibold">ARS</span>
+                        {precios.internet.diario.precio} <span className="text-xs text-white/60 font-semibold">{precios.internet.diario.moneda}</span>
                       </div>
                       <p className="mt-2 text-xs text-white/70">
-                        Válido por 24 horas para 1 dispositivo.
+                        {precios.internet.diario.detalle}
                       </p>
                     </div>
 
@@ -499,10 +500,10 @@ export default function ServicesHubSection() {
                         ACCESO POR 1 MES
                       </span>
                       <div className="font-display text-4xl font-black text-white">
-                        $10.000 <span className="text-xs text-white/60 font-semibold">ARS</span>
+                        {precios.internet.mensual.precio} <span className="text-xs text-white/60 font-semibold">{precios.internet.mensual.moneda}</span>
                       </div>
                       <p className="mt-2 text-xs text-white/70">
-                        30 días corridos para locatarios y personal.
+                        {precios.internet.mensual.detalle}
                       </p>
                     </div>
                   </div>
@@ -598,11 +599,11 @@ export default function ServicesHubSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div className="p-4 rounded-2xl bg-white/5">
-                    <span className="font-bold text-white block mb-1">Voucher Diario - $1.000 ARS</span>
+                    <span className="font-bold text-white block mb-1">Voucher Diario - {precios.internet.diario.precio} {precios.internet.diario.moneda}</span>
                     <p className="text-xs text-white/70">24 Horas de navegación continua en WiFi 5Ghz & 6Ghz.</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-[#EB2347]/20">
-                    <span className="font-bold text-white block mb-1">Voucher Mensual - $10.000 ARS</span>
+                    <span className="font-bold text-white block mb-1">Voucher Mensual - {precios.internet.mensual.precio} {precios.internet.mensual.moneda}</span>
                     <p className="text-xs text-white/70">30 Días corridos de acceso 24/7 para locatarios y personal.</p>
                   </div>
                 </div>

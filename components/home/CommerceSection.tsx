@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { QrCode, Truck, ShoppingBag, ArrowRight, Sparkles, Tag, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { sinMas, type NumerosDelPredio } from "@/lib/contenido/tipos";
 
 const FEATURES = [
   {
@@ -31,7 +32,7 @@ const CATEGORIES = [
   { name: "Confección & Artesanías", count: "160+ Puestos", icon: "🎨" },
 ];
 
-export default function CommerceSection() {
+export default function CommerceSection({ numeros }: { numeros: NumerosDelPredio }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   return (
@@ -158,7 +159,7 @@ export default function CommerceSection() {
             </div>
 
             <span className="text-xs text-muted font-medium">
-              Más de 2.200 locales clasificados
+              Más de {sinMas(numeros.puestos)} locales clasificados
             </span>
           </div>
 

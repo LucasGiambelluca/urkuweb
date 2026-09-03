@@ -2,31 +2,32 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import type { NumerosDelPredio } from "@/lib/contenido/tipos";
 
-const STATS_DATA = [
-  {
-    icon: "/images/icons/houseicon.png",
-    value: "2.200+",
-    label: "PUESTOS ACTIVOS",
-  },
-  {
-    icon: "/images/icons/expositores.png",
-    value: "5.000+",
-    label: "PERSONAS DIARIAS",
-  },
-  {
-    icon: "/images/icons/provicna.png",
-    value: "30+",
-    label: "AÑOS DE TRAYECTORIA",
-  },
-  {
-    icon: "/images/icons/compradores.png",
-    value: "365",
-    label: "DÍAS DE ACTIVIDAD",
-  },
-];
+export default function HeroStats({ numeros }: { numeros: NumerosDelPredio }) {
+  const STATS_DATA = [
+    {
+      icon: "/images/icons/houseicon.png",
+      value: numeros.puestos,
+      label: "PUESTOS ACTIVOS",
+    },
+    {
+      icon: "/images/icons/expositores.png",
+      value: numeros.personasDiarias,
+      label: "PERSONAS DIARIAS",
+    },
+    {
+      icon: "/images/icons/provicna.png",
+      value: numeros.aniosTrayectoria,
+      label: "AÑOS DE TRAYECTORIA",
+    },
+    {
+      icon: "/images/icons/compradores.png",
+      value: numeros.diasActividad,
+      label: "DÍAS DE ACTIVIDAD",
+    },
+  ];
 
-export default function HeroStats() {
   return (
     <section
       id="stats"

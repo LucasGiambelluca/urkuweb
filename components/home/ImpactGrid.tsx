@@ -3,32 +3,33 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import type { NumerosDelPredio } from "@/lib/contenido/tipos";
 
-const IMPACT_ITEMS = [
-  {
-    number: "2.200+",
-    title: "Puestos",
-    description:
-      "Un espacio donde miles de fabricantes y comerciantes desarrollan sus negocios.",
-    image: "/images/one.png",
-  },
-  {
-    number: "5.000+",
-    title: "Empleos",
-    description:
-      "Una comunidad productiva que genera oportunidades directas e indirectas.",
-    image: "/images/pasillos.png",
-  },
-  {
-    number: "25+",
-    title: "Años",
-    description:
-      "Historia, experiencia y evolución acompañando al sector textil.",
-    image: "/images/decenital.png",
-  },
-];
+export default function ImpactGrid({ numeros }: { numeros: NumerosDelPredio }) {
+  const IMPACT_ITEMS = [
+    {
+      number: numeros.puestos,
+      title: "Puestos",
+      description:
+        "Un espacio donde miles de fabricantes y comerciantes desarrollan sus negocios.",
+      image: "/images/one.png",
+    },
+    {
+      number: numeros.empleos,
+      title: "Empleos",
+      description:
+        "Una comunidad productiva que genera oportunidades directas e indirectas.",
+      image: "/images/pasillos.png",
+    },
+    {
+      number: numeros.aniosTrayectoria,
+      title: "Años",
+      description:
+        "Historia, experiencia y evolución acompañando al sector textil.",
+      image: "/images/decenital.png",
+    },
+  ];
 
-export default function ImpactGrid() {
   return (
     <section
       id="impacto"
