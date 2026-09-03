@@ -10,7 +10,8 @@
     "lint": "eslint",
     "db:push": "payload db:push",
     "test": "vitest run",
-    "sembrar:sponsors": "payload run scripts/sembrar-sponsors.ts"
+    "sembrar:sponsors": "payload run scripts/sembrar-sponsors.ts",
+    "inicializar:fichas": "payload run scripts/inicializar-fichas.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.88.0",

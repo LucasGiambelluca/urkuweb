@@ -95,8 +95,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    numeros: Numero;
+    servicios: Servicio;
+    contacto: Contacto;
+  };
+  globalsSelect: {
+    numeros: NumerosSelect<false> | NumerosSelect<true>;
+    servicios: ServiciosSelect<false> | ServiciosSelect<true>;
+    contacto: ContactoSelect<false> | ContactoSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -557,6 +565,160 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Las cifras que se repiten a lo largo de la home.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "numeros".
+ */
+export interface Numero {
+  id: number;
+  /**
+   * Se escribe tal cual se muestra, con el signo mas si corresponde.
+   */
+  puestos: string;
+  personasDiarias: string;
+  empleos: string;
+  /**
+   * A confirmar con el cliente: hasta ahora la web decia 30+ arriba y 25+ mas abajo.
+   */
+  aniosTrayectoria: string;
+  diasActividad: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Tarifas de internet y estacionamiento.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicios".
+ */
+export interface Servicio {
+  id: number;
+  internet: {
+    diario: {
+      precio: string;
+      moneda: string;
+      detalle: string;
+    };
+    mensual: {
+      precio: string;
+      moneda: string;
+      detalle: string;
+    };
+  };
+  estacionamiento: {
+    precio: string;
+    moneda: string;
+    titulo: string;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Datos que aparecen en la seccion de contacto, el pie y el boton flotante.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacto".
+ */
+export interface Contacto {
+  id: number;
+  direccion: string;
+  email: string;
+  horarios: string;
+  whatsapp: {
+    /**
+     * Con codigo de pais y sin espacios ni signos. Es el que usa el enlace.
+     */
+    numero: string;
+    visible: string;
+    /**
+     * Es el texto que aparece ya escrito cuando alguien abre el chat.
+     */
+    mensaje: string;
+  };
+  redes?: {
+    instagram?: string | null;
+    facebook?: string | null;
+    youtube?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "numeros_select".
+ */
+export interface NumerosSelect<T extends boolean = true> {
+  puestos?: T;
+  personasDiarias?: T;
+  empleos?: T;
+  aniosTrayectoria?: T;
+  diasActividad?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicios_select".
+ */
+export interface ServiciosSelect<T extends boolean = true> {
+  internet?:
+    | T
+    | {
+        diario?:
+          | T
+          | {
+              precio?: T;
+              moneda?: T;
+              detalle?: T;
+            };
+        mensual?:
+          | T
+          | {
+              precio?: T;
+              moneda?: T;
+              detalle?: T;
+            };
+      };
+  estacionamiento?:
+    | T
+    | {
+        precio?: T;
+        moneda?: T;
+        titulo?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contacto_select".
+ */
+export interface ContactoSelect<T extends boolean = true> {
+  direccion?: T;
+  email?: T;
+  horarios?: T;
+  whatsapp?:
+    | T
+    | {
+        numero?: T;
+        visible?: T;
+        mensaje?: T;
+      };
+  redes?:
+    | T
+    | {
+        instagram?: T;
+        facebook?: T;
+        youtube?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
