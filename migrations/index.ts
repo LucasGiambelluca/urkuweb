@@ -8,6 +8,7 @@ import * as migration_20260903_222736_whatsapp_alquiler from './20260903_222736_
 import * as migration_20260904_002849_home_bloques from './20260904_002849_home_bloques';
 import * as migration_20260904_141216_popup from './20260904_141216_popup';
 import * as migration_20260904_183918_formularios from './20260904_183918_formularios';
+import * as migration_20260904_190238_bloque_formulario from './20260904_190238_bloque_formulario';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20260904_183918_formularios.up,
     down: migration_20260904_183918_formularios.down,
-    name: '20260904_183918_formularios'
+    name: '20260904_183918_formularios',
+  },
+  {
+    up: migration_20260904_190238_bloque_formulario.up,
+    down: migration_20260904_190238_bloque_formulario.down,
+    name: '20260904_190238_bloque_formulario'
   },
 ];

@@ -42,6 +42,48 @@ export const BLOQUES_DE_SECCION: Block[] = [
       },
     ],
   },
+  {
+    slug: 'formulario',
+    labels: { singular: 'Formulario', plural: 'Formularios' },
+    admin: { group: 'Secciones' },
+    fields: [
+      {
+        name: 'formulario',
+        type: 'relationship',
+        relationTo: 'forms',
+        required: true,
+        label: 'Que formulario mostrar',
+      },
+      {
+        name: 'imagen',
+        type: 'upload',
+        relationTo: 'media',
+        label: 'Imagen que va al lado',
+        admin: {
+          description: 'Opcional. Sin imagen, el formulario ocupa todo el ancho.',
+        },
+      },
+      {
+        name: 'lado',
+        type: 'select',
+        defaultValue: 'izquierda',
+        label: 'De que lado va la imagen',
+        options: [
+          { label: 'Izquierda', value: 'izquierda' },
+          { label: 'Derecha', value: 'derecha' },
+        ],
+      },
+      {
+        name: 'ancla',
+        type: 'text',
+        label: 'Nombre para enlazar desde afuera',
+        admin: {
+          description:
+            'Opcional. Si escribis "inscripcion", el popup y los enlaces pueden apuntar a #inscripcion.',
+        },
+      },
+    ],
+  },
 ];
 
 export const SLUGS_DE_BLOQUE = BLOQUES_DE_SECCION.map((b) => b.slug);

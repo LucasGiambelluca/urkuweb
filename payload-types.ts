@@ -1018,6 +1018,21 @@ export interface Home {
             blockName?: string | null;
             blockType: 'novedades';
           }
+        | {
+            formulario: number | Form;
+            /**
+             * Opcional. Sin imagen, el formulario ocupa todo el ancho.
+             */
+            imagen?: (number | null) | Media;
+            lado?: ('izquierda' | 'derecha') | null;
+            /**
+             * Opcional. Si escribis "inscripcion", el popup y los enlaces pueden apuntar a #inscripcion.
+             */
+            ancla?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'formulario';
+          }
       )[]
     | null;
   updatedAt?: string | null;
@@ -1203,6 +1218,16 @@ export interface HomeSelect<T extends boolean = true> {
           | T
           | {
               cantidad?: T;
+              id?: T;
+              blockName?: T;
+            };
+        formulario?:
+          | T
+          | {
+              formulario?: T;
+              imagen?: T;
+              lado?: T;
+              ancla?: T;
               id?: T;
               blockName?: T;
             };

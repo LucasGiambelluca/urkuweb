@@ -25,6 +25,10 @@ import ContactSection from "@/components/home/ContactSection";
 import SiteFooter from "@/components/layout/SiteFooter";
 import PopupBienvenida from "@/components/home/PopupBienvenida";
 import { aPopupVisible, type PopupVisible } from "@/lib/contenido/popup";
+import { type FormularioVisible } from "@/components/home/BloqueFormulario";
+import { type CampoDeFormulario } from "@/lib/formularios/validacion";
+// textoPlano ya existe y aplana el richText de Lexical a texto corrido.
+import { textoPlano } from "@/lib/contenido/novedades";
 
 /**
  * Orden con el que la home venia armada antes de existir el armador (es el
@@ -205,6 +209,76 @@ async function obtenerContacto(): Promise<DatosDeContacto | null> {
   }
 }
 
+/**
+ * Trae la definicion de cada formulario que aparezca en los bloques.
+ *
+ * Se resuelve aca y no dentro del componente porque la home ya consulta todo
+ * de una: asi el bloque recibe datos listos y sigue siendo de servidor puro.
+ */
+async function obtenerFormularios(
+  bloques: BloqueDeSeccion[],
+): Promise<Record<string, FormularioVisible>> {
+  const deFormulario = bloques.filter((b) => b.blockType === 'formulario' && b.id);
+  if (deFormulario.length === 0) return {};
+
+  try {
+    const payload = await getPayload({ config });
+    const salida: Record<string, FormularioVisible> = {};
+
+    for (const bloque of deFormulario) {
+      const referencia = bloque.formulario;
+      const idDelFormulario =
+        typeof referencia === 'object' && referencia !== null
+          ? (referencia as { id: string | number }).id
+          : (referencia as string | number);
+      if (idDelFormulario == null) continue;
+
+      const definicion = await payload.findByID({
+        collection: 'forms',
+        id: idDelFormulario,
+        depth: 0,
+      });
+
+      const campos = (definicion.fields ?? []) as unknown as (CampoDeFormulario & {
+        width?: number | null;
+      })[];
+
+      const anchos: Record<string, number> = {};
+      for (const campo of campos) anchos[campo.name] = campo.width ?? 100;
+
+      const imagen = bloque.imagen;
+      const imagenVisible =
+        typeof imagen === 'object' && imagen !== null && 'url' in imagen
+          ? {
+              url: String((imagen as { url: string }).url),
+              alt: String((imagen as { alt?: string }).alt ?? ''),
+              ancho: Number((imagen as { width?: number }).width ?? 0),
+              alto: Number((imagen as { height?: number }).height ?? 0),
+            }
+          : undefined;
+
+      salida[String(bloque.id)] = {
+        id: definicion.id,
+        titulo: definicion.title,
+        campos,
+        anchos,
+        textoDelBoton: definicion.submitButtonLabel || 'Enviar',
+        mensajeDeGracias:
+          textoPlano(definicion.confirmationMessage as never) ||
+          '¡Gracias! Recibimos tus datos.',
+        imagen: imagenVisible && imagenVisible.ancho > 0 ? imagenVisible : undefined,
+        lado: bloque.lado === 'derecha' ? 'derecha' : 'izquierda',
+        ancla: bloque.ancla ?? undefined,
+      };
+    }
+
+    return salida;
+  } catch (error) {
+    console.error('[home] no se pudieron leer los formularios:', error);
+    return {};
+  }
+}
+
 export default async function Home() {
   const [sponsors, numeros, precios, contacto, secciones, notas, popup] = await Promise.all([
     obtenerSponsors(),
@@ -225,6 +299,7 @@ export default async function Home() {
   // Mientras no haya ninguna nota publicada se muestran las de ejemplo: una
   // seccion de novedades vacia se ve peor que una con contenido de muestra.
   const novedades = notas && notas.length > 0 ? notas : NOVEDADES_RESPALDO;
+  const formularios = await obtenerFormularios(bloques);
 
   return (
     <>
@@ -239,6 +314,7 @@ export default async function Home() {
           contacto={datosContacto}
           sponsors={sponsors}
           novedades={novedades}
+          formularios={formularios}
         />
         <ContactSection contacto={datosContacto} />
       </main>

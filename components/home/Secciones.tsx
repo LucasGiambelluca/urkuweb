@@ -15,6 +15,7 @@ import ImpactGrid from "@/components/home/ImpactGrid";
 import CommerceSection from "@/components/home/CommerceSection";
 import SponsorShowcase, { type SponsorVisible } from "@/components/home/SponsorShowcase";
 import NewsFeed from "@/components/home/NewsFeed";
+import BloqueFormulario, { type FormularioVisible } from "@/components/home/BloqueFormulario";
 
 /**
  * Forma minima de un bloque de la ficha "home". Se define suelta (en vez de
@@ -27,6 +28,10 @@ export type BloqueDeSeccion = {
   id?: string | null;
   blockType: string;
   cantidad?: number;
+  ancla?: string | null;
+  lado?: string | null;
+  formulario?: unknown;
+  imagen?: unknown;
 };
 
 type PropsDeSecciones = {
@@ -36,6 +41,7 @@ type PropsDeSecciones = {
   contacto: DatosDeContacto;
   sponsors: SponsorVisible[] | null;
   novedades: NovedadVisible[];
+  formularios: Record<string, FormularioVisible>;
 };
 
 /** Lo que muestra el bloque de novedades si nadie toco el campo "cantidad". */
@@ -53,6 +59,7 @@ export default function Secciones({
   contacto,
   sponsors,
   novedades,
+  formularios,
 }: PropsDeSecciones) {
   return (
     <>
@@ -89,6 +96,13 @@ export default function Secciones({
                 novedades={novedades.slice(0, bloque.cantidad ?? NOVEDADES_POR_DEFECTO)}
               />
             );
+          case 'formulario': {
+            // El bloque guarda a que formulario apunta; la pagina ya trajo su
+            // definicion. Si el formulario se borro del panel, no se dibuja
+            // nada en vez de romper la pagina.
+            const visible = bloque.id ? formularios[bloque.id] : undefined;
+            return visible ? <BloqueFormulario key={key} formulario={visible} /> : null;
+          }
           default:
             // Un blockType que no reconocemos no puede tirar abajo la
             // pagina: pasa si alguien saca un bloque del codigo (deja de
