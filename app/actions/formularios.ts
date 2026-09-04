@@ -36,6 +36,11 @@ export async function enviarFormulario(
     return { estado: 'ok', errores: {} };
   }
 
+  // Declarada fuera del try: el catch la necesita para devolverle al
+  // visitante lo que ya habia cargado, y el catch esta fuera del alcance
+  // de las variables declaradas dentro del try.
+  const entrada: Record<string, string> = {};
+
   try {
     const payload = await getPayload({ config });
     const definicion = await payload.findByID({
@@ -47,7 +52,6 @@ export async function enviarFormulario(
 
     const campos = (definicion.fields ?? []) as unknown as CampoDeFormulario[];
 
-    const entrada: Record<string, string> = {};
     for (const campo of campos) {
       entrada[campo.name] = String(formData.get(campo.name) ?? '');
     }
@@ -58,6 +62,7 @@ export async function enviarFormulario(
         estado: 'error',
         errores: resultado.errores,
         mensajeGeneral: 'Revisá los campos marcados.',
+        valores: entrada,
       };
     }
 
@@ -67,6 +72,7 @@ export async function enviarFormulario(
         errores: {},
         mensajeGeneral:
           'Recibimos varios envíos desde esta conexión. Esperá un rato antes de mandar otro.',
+        valores: entrada,
       };
     }
 
@@ -90,6 +96,7 @@ export async function enviarFormulario(
       errores: {},
       mensajeGeneral:
         'No pudimos registrar tus datos. Volvé a intentar en unos minutos o escribinos por WhatsApp.',
+      valores: entrada,
     };
   }
 

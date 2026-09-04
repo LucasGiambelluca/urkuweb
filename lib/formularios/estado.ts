@@ -10,6 +10,13 @@ export type EstadoDeEnvio = {
   estado: 'inicial' | 'ok' | 'error';
   errores: Record<string, string>;
   mensajeGeneral?: string;
+  /**
+   * Lo que cargo el visitante, para devolverselo si la validacion falla.
+   *
+   * React resetea el formulario cuando la accion termina, asi que sin esto
+   * un error en un solo campo le borra los otros diez.
+   */
+  valores?: Record<string, string>;
 };
 
 export const estadoInicial: EstadoDeEnvio = { estado: 'inicial', errores: {} };

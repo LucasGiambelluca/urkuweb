@@ -82,6 +82,7 @@ export default function Formulario({
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? idError : undefined}
                 className={CLASE_CAMPO}
+                defaultValue={resultado.valores?.[campo.name] ?? ''}
               />
             ) : campo.blockType === 'select' ? (
               <select
@@ -90,7 +91,7 @@ export default function Formulario({
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? idError : undefined}
                 className={CLASE_CAMPO}
-                defaultValue=""
+                defaultValue={resultado.valores?.[campo.name] ?? ''}
               >
                 <option value="">Elegí una opción</option>
                 {(campo.options ?? []).map((o) => (
@@ -108,6 +109,7 @@ export default function Formulario({
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? idError : undefined}
                 className="h-5 w-5 rounded border-border-subtle"
+                defaultChecked={resultado.valores?.[campo.name] === 'si'}
               />
             ) : (
               <input
@@ -117,6 +119,7 @@ export default function Formulario({
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? idError : undefined}
                 className={CLASE_CAMPO}
+                defaultValue={resultado.valores?.[campo.name] ?? ''}
               />
             )}
 
