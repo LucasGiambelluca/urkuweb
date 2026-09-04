@@ -12,6 +12,7 @@
     "test": "vitest run",
     "sembrar:sponsors": "payload run scripts/sembrar-sponsors.ts",
     "sembrar:popup": "payload run scripts/sembrar-popup.ts",
+    "sembrar:formulario-expo": "payload run scripts/sembrar-formulario-expo.ts",
     "inicializar:fichas": "payload run scripts/inicializar-fichas.ts",
     "crear:admin": "payload run scripts/crear-admin.ts"
   },
