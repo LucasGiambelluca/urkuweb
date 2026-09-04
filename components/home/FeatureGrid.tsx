@@ -46,6 +46,8 @@ export default function FeatureGrid() {
                     src="/images/masks/patron-lineas.png"
                     alt=""
                     fill
+                    // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+                    sizes="(min-width: 768px) 176px, 128px"
                     className="object-contain object-right filter invert"
                 />
             </div>
@@ -116,6 +118,17 @@ function Card({
     href,
     size,
 }: any) {
+    // El ancho real depende de la columna que ocupa la tarjeta en la grilla
+    // de 12: grande usa 7/12 en escritorio, angosta pasa de 100% a 50% (md)
+    // y a 5/12 (lg), ancha el 12/12 completo (con tope en los 1280px de
+    // max-w-7xl).
+    const sizes =
+        size === "large"
+            ? "(max-width: 1024px) 100vw, 750px"
+            : size === "wide"
+                ? "(max-width: 1280px) 100vw, 1280px"
+                : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 540px";
+
     return (
         <Link
             href={href}
@@ -130,6 +143,7 @@ function Card({
             <MaskedImage
                 src={image}
                 fill
+                sizes={sizes}
                 alt={title}
                 wrapperClassName="absolute inset-0 w-full h-full"
                 imageClassName="object-cover transition duration-700 group-hover:scale-105"

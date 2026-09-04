@@ -138,6 +138,8 @@ export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) 
               src="/images/masks/torn-paper.png"
               alt=""
               fill
+              // Franja a todo el ancho del contenedor max-w-7xl (1280px)
+              sizes="(max-width: 1280px) 100vw, 1280px"
               className="object-cover object-bottom"
             />
           </div>

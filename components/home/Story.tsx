@@ -30,6 +30,8 @@ export default function Story({ numeros }: { numeros: NumerosDelPredio }) {
           src="/images/masks/halftone.svg"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-left dark:invert"
         />
       </div>
@@ -219,6 +221,9 @@ export default function Story({ numeros }: { numeros: NumerosDelPredio }) {
                 src="/images/histor.png"
                 alt="Historia Urkupiña"
                 fill
+                // Columna de 7/12 en una grilla dentro de max-w-7xl (1280px):
+                // 100% de ancho abajo de lg, 750px de ahi en mas
+                sizes="(max-width: 1024px) 100vw, 750px"
                 className="site-image object-cover transition duration-700 hover:scale-105"
               />
             </div>

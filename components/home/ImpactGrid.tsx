@@ -83,6 +83,13 @@ export default function ImpactGrid({ numeros }: { numeros: NumerosDelPredio }) {
                 src={item.image}
                 alt={item.title}
                 fill
+                // La primera tarjeta ocupa 7/12 de la grilla en escritorio,
+                // las otras dos 5/12; abajo de lg todas van a 100% de ancho.
+                sizes={
+                  index === 0
+                    ? "(max-width: 1024px) 100vw, 750px"
+                    : "(max-width: 1024px) 100vw, 540px"
+                }
                 className="site-image object-cover transition-transform duration-700 group-hover:scale-105"
               />
 

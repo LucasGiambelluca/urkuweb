@@ -79,6 +79,8 @@ export default function InstagramFeedPreview() {
                 src="/assets/logourku.png"
                 alt="Perfil oficial de Urkupiña en Instagram"
                 fill
+                // Avatar de tamano fijo por clases h-16 w-16/md:h-20 w-20
+                sizes="(min-width: 768px) 80px, 64px"
                 className="object-contain p-1.5"
               />
             </div>
@@ -137,6 +139,9 @@ export default function InstagramFeedPreview() {
                 src={post.image}
                 alt={`Publicación de Instagram Urkupiña: ${post.caption.slice(0, 50)}...`}
                 fill
+                // Grilla de hasta 4 columnas dentro de max-w-7xl (1280px):
+                // 100% en celular, 50% en tablet, ~300px por columna en escritorio
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
 

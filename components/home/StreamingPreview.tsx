@@ -49,6 +49,8 @@ export default function StreamingPreview({ canalYoutube }: { canalYoutube: strin
           src="/images/masks/patron-cruces.png"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-right dark:invert"
         />
       </div>
@@ -144,6 +146,9 @@ export default function StreamingPreview({ canalYoutube }: { canalYoutube: strin
                   src="/images/feria-hero.jpg"
                   alt="Portada de transmisión en vivo Urkupiña"
                   fill
+                  // El reproductor vive en una tarjeta con tope max-w-5xl
+                  // (1024px): 100% de ancho abajo de ese tope, 1024px de ahi en mas
+                  sizes="(max-width: 1024px) 100vw, 1024px"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
                 />

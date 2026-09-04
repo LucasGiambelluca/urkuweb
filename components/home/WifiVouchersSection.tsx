@@ -31,6 +31,8 @@ export default function WifiVouchersSection() {
           src="/images/masks/halftone.svg"
           alt=""
           fill
+          // Tamano fijo por clases w-48/md:w-64, no crece con el viewport
+          sizes="(min-width: 768px) 256px, 192px"
           className="object-contain object-right"
         />
       </div>

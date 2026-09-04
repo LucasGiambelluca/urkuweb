@@ -50,6 +50,8 @@ export default function VisitSection({ numeros }: { numeros: NumerosDelPredio })
           src="/images/masks/patron-cruces.png"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-left dark:invert"
         />
       </div>
@@ -300,6 +302,8 @@ export default function VisitSection({ numeros }: { numeros: NumerosDelPredio })
               src="/images/tarjeta-servicios.jpg"
               alt="Adquiere tu Tarjeta de Servicios Urkupiña - Afiche Oficial"
               fill
+              // Banner a todo el ancho del contenedor max-w-7xl (1280px)
+              sizes="(max-width: 1280px) 100vw, 1280px"
               className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               priority
             />

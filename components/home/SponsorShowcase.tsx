@@ -59,6 +59,8 @@ export default function SponsorShowcase({ sponsors }: { sponsors?: SponsorVisibl
           src="/images/masks/patron-cruces.png"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-right dark:invert"
         />
       </div>

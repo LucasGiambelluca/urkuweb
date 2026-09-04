@@ -101,6 +101,8 @@ export default function RentalsSection() {
           src="/images/masks/halftone.svg"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-right"
         />
       </div>
@@ -196,6 +198,9 @@ export default function RentalsSection() {
                 src="/images/decenital.png"
                 alt="Vista aérea del predio Paseo Urkupiña"
                 fill
+                // Columna de 6/12 en una grilla dentro de max-w-7xl (1280px):
+                // 100% de ancho abajo de lg, 640px (mitad) de ahi en mas
+                sizes="(max-width: 1024px) 100vw, 640px"
                 wrapperClassName="w-full site-image rounded-[28px] aspect-[4/3]"
                 imageClassName="site-image object-cover transition-transform duration-700 hover:scale-105"
                 maskSrc="/images/masks/maskelements.png"

@@ -44,6 +44,8 @@ export default function Timeline() {
           src="/images/masks/patron-lineas.png"
           alt=""
           fill
+          // Tamano fijo por clases w-32/md:w-44, no crece con el viewport
+          sizes="(min-width: 768px) 176px, 128px"
           className="object-contain object-right dark:invert"
         />
       </div>
@@ -54,6 +56,8 @@ export default function Timeline() {
           src="/favicon.png"
           alt=""
           fill
+          // Tamano fijo por clases w-24/sm:w-32, no crece con el viewport
+          sizes="(min-width: 640px) 128px, 96px"
           className="object-contain object-right-bottom filter drop-shadow-2xl"
         />
       </div>
@@ -150,6 +154,9 @@ export default function Timeline() {
                           src={item.image}
                           alt={item.title}
                           fill
+                          // Columna de una grilla de 2 dentro de max-w-7xl
+                          // (1280px): 100% abajo de md, 640px (mitad) de ahi en mas
+                          sizes="(max-width: 768px) 100vw, 640px"
                           className="site-image object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-50" />
