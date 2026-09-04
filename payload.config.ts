@@ -16,6 +16,7 @@ import { Numeros } from './globals/Numeros';
 import { Servicios } from './globals/Servicios';
 import { Contacto } from './globals/Contacto';
 import { Home } from './globals/Home';
+import { Popup } from './globals/Popup';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -57,7 +58,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Categories, Media, Posts, Consultas, Sponsors],
-  globals: [Numeros, Servicios, Contacto, Home],
+  globals: [Numeros, Servicios, Contacto, Home, Popup],
   editor: lexicalEditor({}),
   // Necesario para el redimensionado de imagenes que pide collections/Media.ts
   // (miniatura y tarjeta). Sin esto, subir el logo de un sponsor falla.

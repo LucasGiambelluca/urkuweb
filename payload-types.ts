@@ -100,12 +100,14 @@ export interface Config {
     servicios: Servicio;
     contacto: Contacto;
     home: Home;
+    popup: Popup;
   };
   globalsSelect: {
     numeros: NumerosSelect<false> | NumerosSelect<true>;
     servicios: ServiciosSelect<false> | ServiciosSelect<true>;
     contacto: ContactoSelect<false> | ContactoSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
+    popup: PopupSelect<false> | PopupSelect<true>;
   };
   locale: null;
   widgets: {
@@ -737,6 +739,29 @@ export interface Home {
   createdAt?: string | null;
 }
 /**
+ * El aviso que aparece al entrar al sitio. Se muestra cada vez que alguien abre la portada.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup".
+ */
+export interface Popup {
+  id: number;
+  /**
+   * Apagado, el popup no aparece aunque haya una imagen cargada.
+   */
+  activo?: boolean | null;
+  /**
+   * Se muestra entera, sin recortar. El texto que leen los lectores de pantalla sale del campo de texto alternativo de la imagen.
+   */
+  imagen?: (number | null) | Media;
+  /**
+   * Opcional. Una seccion del sitio (#contacto) o una direccion completa (https://...). Si queda vacio, la imagen no se puede clickear.
+   */
+  enlace?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "numeros_select".
  */
@@ -897,6 +922,18 @@ export interface HomeSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup_select".
+ */
+export interface PopupSelect<T extends boolean = true> {
+  activo?: T;
+  imagen?: T;
+  enlace?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
