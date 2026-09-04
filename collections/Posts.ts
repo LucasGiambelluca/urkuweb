@@ -1,12 +1,17 @@
 import type { CollectionConfig } from 'payload';
 import { revalidatePath } from 'next/cache';
 import { completarFechaDePublicacion } from '../lib/contenido/publicacion';
+import { aSlug } from '../lib/contenido/slug';
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'status', 'publishedAt', 'updatedAt'],
+  },
+  labels: {
+    singular: 'Nota',
+    plural: 'Notas',
   },
   access: {
     read: ({ req }) => {
@@ -93,8 +98,18 @@ export const Posts: CollectionConfig = {
               unique: true,
               index: true,
               label: 'URL Slug',
+              hooks: {
+                beforeValidate: [
+                  ({ value, data }) => {
+                    const actual = typeof value === 'string' ? value.trim() : '';
+                    if (actual !== '') return aSlug(actual);
+                    // Si el editor no lo escribio, sale del titulo.
+                    return data?.title ? aSlug(String(data.title)) : value;
+                  },
+                ],
+              },
               admin: {
-                description: 'Ejemplo: optimizacion-envios-nacionales',
+                description: 'Se completa solo a partir del titulo. Se usa en la direccion web de la nota.',
               },
             },
             {
@@ -146,6 +161,7 @@ export const Posts: CollectionConfig = {
             {
               name: 'status',
               type: 'select',
+              label: 'Estado de publicación',
               defaultValue: 'draft',
               options: [
                 { label: 'Borrador', value: 'draft' },

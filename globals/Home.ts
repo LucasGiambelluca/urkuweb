@@ -35,6 +35,7 @@ export const Home: GlobalConfig = {
       name: 'secciones',
       type: 'blocks',
       label: 'Secciones',
+      labels: { singular: 'Sección', plural: 'Secciones' },
       minRows: 1,
       blocks: BLOQUES_DE_SECCION,
       defaultValue: ORDEN_INICIAL,

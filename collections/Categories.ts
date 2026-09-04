@@ -6,6 +6,10 @@ export const Categories: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'createdAt'],
   },
+  labels: {
+    singular: 'Categoría',
+    plural: 'Categorías',
+  },
   access: {
     read: () => true,
   },
@@ -14,6 +18,7 @@ export const Categories: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      label: 'Nombre',
     },
     {
       name: 'slug',
@@ -21,8 +26,10 @@ export const Categories: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      label: 'URL Slug',
       admin: {
         position: 'sidebar',
+        description: 'Se usa en la direccion web. Ejemplo: obras',
       },
     },
   ],

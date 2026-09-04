@@ -173,6 +173,9 @@ export interface User {
 export interface Category {
   id: number;
   name: string;
+  /**
+   * Se usa en la direccion web. Ejemplo: obras
+   */
   slug: string;
   updatedAt: string;
   createdAt: string;
@@ -222,7 +225,7 @@ export interface Post {
   id: number;
   title: string;
   /**
-   * Ejemplo: optimizacion-envios-nacionales
+   * Se completa solo a partir del titulo. Se usa en la direccion web de la nota.
    */
   slug: string;
   category: number | Category;
