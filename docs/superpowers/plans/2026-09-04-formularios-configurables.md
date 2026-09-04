@@ -24,7 +24,7 @@
 
 Todo esto se comprobó leyendo el paquete y el código, no de memoria:
 
-- El plugin expone `formBuilderPlugin(config)` y también `formBuilderTranslations`, que trae **español** (`dist/translations/languages/es.js`).
+- El plugin expone `formBuilderPlugin(config)`. **Fusiona sus traducciones solo**, aplanando el envoltorio: no hay que pasarle nada a `i18n.translations`.
 - `FormBuilderPluginConfig` acepta `fields`, `formOverrides`, `formSubmissionOverrides`, `defaultToEmail`, `beforeEmail`, `handlePayment`, `redirectRelationships`, `uploadCollections`.
 - `formOverrides` y `formSubmissionOverrides` son `{ fields?: FieldsOverride } & Partial<Omit<CollectionConfig, 'fields'>>`, así que aceptan `slug`, `labels`, `admin` y `access`.
 - Los slugs por defecto son **`forms`** y **`form-submissions`**.
@@ -56,7 +56,7 @@ Esperado: `3.88.0`.
 En `payload.config.ts`, agregar los imports junto a los que ya están:
 
 ```ts
-import { formBuilderPlugin, formBuilderTranslations } from '@payloadcms/plugin-form-builder';
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder';
 import { soloAdmin, soloAutenticado } from './access/roles';
 ```
 
@@ -120,14 +120,14 @@ Agregar la clave `plugins` al objeto que recibe `buildConfig`, después de `glob
   ],
 ```
 
-Y sumar las traducciones del plugin a la configuración de `i18n` que ya existe, para que el constructor de campos se vea en español:
+**No hay que tocar `i18n`.** El plugin fusiona sus propias traducciones dentro de `config.i18n.translations` segun los idiomas soportados, y aplana el envoltorio antes de hacerlo (`dist/index.js`, lineas 44-45: `flattenedTranslations[lang] = entry.translations`). Pasarle `formBuilderTranslations` a mano guarda datos mal formados en la configuracion.
+
+Agregar este comentario arriba de `plugins`, para que nadie lo reintroduzca:
 
 ```ts
-  i18n: {
-    supportedLanguages: { es },
-    fallbackLanguage: 'es',
-    translations: formBuilderTranslations,
-  },
+  // El plugin de formularios fusiona sus propias traducciones dentro de
+  // i18n.translations segun los idiomas soportados, asi que no hay que
+  // pasarselas a mano.
 ```
 
 - [ ] **Step 3: Generar tipos y migración**
