@@ -1121,6 +1121,21 @@ const sembrar = async () => {
       title: TITULO,
       submitButtonLabel: 'Quiero participar',
       confirmationType: 'message',
+      // Obligatorio cuando el tipo de confirmacion es "message": la coleccion
+      // del plugin lo declara required. Ademas es el texto que la home lee con
+      // textoPlano para reemplazar al formulario despues de enviarlo.
+      confirmationMessage: {
+        root: {
+          type: 'root', direction: 'ltr', format: '', indent: 0, version: 1,
+          children: [{
+            type: 'paragraph', version: 1, direction: 'ltr', format: '', indent: 0,
+            children: [{
+              type: 'text', version: 1, format: 0, detail: 0, mode: 'normal', style: '',
+              text: '¡Gracias! Recibimos tus datos y te vamos a contactar a la brevedad.',
+            }],
+          }],
+        },
+      },
       fields: [
         ...CAMPOS.map((c) => ({ blockType: 'text' as const, ...c })),
         // El correo va aparte porque su tipo valida el formato.
