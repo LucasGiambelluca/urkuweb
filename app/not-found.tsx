@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 export default function NoEncontrada() {
   return (
     <html lang="es" className={`${barlowCondensed.variable} ${dmSans.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#080C14] text-white">
+      <body className="min-h-full bg-background text-foreground">
         <main className="flex min-h-screen flex-col items-center justify-center px-6 py-24 text-center">
           <span className="mb-6 flex items-center gap-4">
             <span className="h-[2px] w-12 bg-[#EB2347]" aria-hidden="true" />
@@ -51,7 +51,7 @@ export default function NoEncontrada() {
             esta página
           </h1>
 
-          <p className="mt-8 max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+          <p className="mt-8 max-w-xl text-base leading-relaxed text-muted md:text-lg">
             Puede que la dirección esté mal escrita, o que la página ya no exista.
             Desde el inicio vas a poder llegar a todo.
           </p>
@@ -66,7 +66,7 @@ export default function NoEncontrada() {
 
             <Link
               href="/#contacto"
-              className="inline-flex items-center justify-center rounded-full border border-white/20 px-9 py-4 text-base font-semibold text-white transition-all hover:border-[#EB2347] hover:text-[#EB2347] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EB2347] focus-visible:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-full border border-border-subtle px-9 py-4 text-base font-semibold text-foreground transition-all hover:border-[#EB2347] hover:text-[#EB2347] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EB2347] focus-visible:ring-offset-2"
             >
               Escribinos
             </Link>
