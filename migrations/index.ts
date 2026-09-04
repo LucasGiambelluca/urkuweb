@@ -5,6 +5,7 @@ import * as migration_20260903_205031_sponsors from './20260903_205031_sponsors'
 import * as migration_20260903_215202_globales from './20260903_215202_globales';
 import * as migration_20260903_221046_alquiler from './20260903_221046_alquiler';
 import * as migration_20260903_222736_whatsapp_alquiler from './20260903_222736_whatsapp_alquiler';
+import * as migration_20260904_002849_home_bloques from './20260904_002849_home_bloques';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260903_222736_whatsapp_alquiler.up,
     down: migration_20260903_222736_whatsapp_alquiler.down,
-    name: '20260903_222736_whatsapp_alquiler'
+    name: '20260903_222736_whatsapp_alquiler',
+  },
+  {
+    up: migration_20260904_002849_home_bloques.up,
+    down: migration_20260904_002849_home_bloques.down,
+    name: '20260904_002849_home_bloques'
   },
 ];
