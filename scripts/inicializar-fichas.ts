@@ -16,7 +16,7 @@
 import { getPayload } from 'payload';
 import config from '../payload.config';
 
-const FICHAS = ['numeros', 'servicios', 'contacto'] as const;
+const FICHAS = ['numeros', 'servicios', 'contacto', 'home'] as const;
 
 const inicializar = async () => {
   const payload = await getPayload({ config });

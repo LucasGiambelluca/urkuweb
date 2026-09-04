@@ -99,11 +99,13 @@ export interface Config {
     numeros: Numero;
     servicios: Servicio;
     contacto: Contacto;
+    home: Home;
   };
   globalsSelect: {
     numeros: NumerosSelect<false> | NumerosSelect<true>;
     servicios: ServiciosSelect<false> | ServiciosSelect<true>;
     contacto: ContactoSelect<false> | ContactoSelect<true>;
+    home: HomeSelect<false> | HomeSelect<true>;
   };
   locale: null;
   widgets: {
@@ -666,6 +668,75 @@ export interface Contacto {
   createdAt?: string | null;
 }
 /**
+ * Que secciones aparecen en la portada y en que orden. El menu, la portada, el contacto y el pie son fijos.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  /**
+   * Arrastra para reordenar. Sacar una seccion no borra su contenido: vuelve a aparecer si la agregas de nuevo.
+   */
+  secciones?:
+    | (
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cifras';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'historia';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'lineaDeTiempo';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'streaming';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'visita';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'servicios';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'impacto';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'comercio';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'sponsors';
+          }
+        | {
+            cantidad: number;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'novedades';
+          }
+      )[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "numeros_select".
  */
@@ -751,6 +822,80 @@ export interface ContactoSelect<T extends boolean = true> {
         instagram?: T;
         facebook?: T;
         youtube?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  secciones?:
+    | T
+    | {
+        cifras?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        historia?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        lineaDeTiempo?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        streaming?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        visita?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        servicios?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        impacto?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        comercio?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        sponsors?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+        novedades?:
+          | T
+          | {
+              cantidad?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;
