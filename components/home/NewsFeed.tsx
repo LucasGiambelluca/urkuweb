@@ -169,7 +169,12 @@ export default function NewsFeed({ novedades }: { novedades: NovedadVisible[] })
             style={{ gap: `${gap}px` }}
           >
             {posts.map((post, index) => {
-              const isUpcoming = post.isUpcoming ?? (index < 2 || post.category === "Próximamente");
+              // La cinta de "Próximamente" la decide el dato: una nota con
+              // fecha futura, o una del respaldo marcada como tal. Antes
+              // habia un respaldo por posicion (las dos primeras tarjetas),
+              // que quedo muerto cuando las novedades pasaron a salir de la
+              // base con el campo siempre definido.
+              const isUpcoming = post.isUpcoming ?? false;
               const catStyle = getCategoryStyle(post.category);
 
               return (
@@ -203,6 +208,12 @@ export default function NewsFeed({ novedades }: { novedades: NovedadVisible[] })
                           src={post.image || NOVEDADES_RESPALDO[index % NOVEDADES_RESPALDO.length].image || "/images/one.png"}
                           alt={`Imagen destacada de ${post.title}`}
                           fill
+                          // Sin esto Next sirve el archivo mas grande del
+                          // srcset para una tarjeta que nunca pasa de un
+                          // tercio del ancho. Los cortes siguen a los del
+                          // carrusel: una tarjeta en celular, dos en tablet,
+                          // tres en escritorio.
+                          sizes="(max-width: 640px) 76vw, (max-width: 1024px) 45vw, 30vw"
                           className="site-image object-cover transition duration-500 group-hover:scale-105"
                           draggable={false}
                         />
