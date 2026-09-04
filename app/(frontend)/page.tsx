@@ -23,6 +23,8 @@ import Secciones, { type BloqueDeSeccion } from "@/components/home/Secciones";
 import { type SponsorVisible } from "@/components/home/SponsorShowcase";
 import ContactSection from "@/components/home/ContactSection";
 import SiteFooter from "@/components/layout/SiteFooter";
+import PopupBienvenida from "@/components/home/PopupBienvenida";
+import { aPopupVisible, type PopupVisible } from "@/lib/contenido/popup";
 
 /**
  * Orden con el que la home venia armada antes de existir el armador (es el
@@ -162,6 +164,18 @@ async function obtenerNovedades(): Promise<NovedadVisible[] | null> {
   }
 }
 
+async function obtenerPopup(): Promise<PopupVisible | null> {
+  try {
+    const payload = await getPayload({ config });
+    // depth 1 trae la imagen poblada; sin eso llega solo el id.
+    const popup = await payload.findGlobal({ slug: 'popup', depth: 1 });
+    return aPopupVisible(popup);
+  } catch (error) {
+    console.error('[home] no se pudo leer el popup:', error);
+    return null;
+  }
+}
+
 async function obtenerContacto(): Promise<DatosDeContacto | null> {
   try {
     const payload = await getPayload({ config });
@@ -192,13 +206,14 @@ async function obtenerContacto(): Promise<DatosDeContacto | null> {
 }
 
 export default async function Home() {
-  const [sponsors, numeros, precios, contacto, secciones, notas] = await Promise.all([
+  const [sponsors, numeros, precios, contacto, secciones, notas, popup] = await Promise.all([
     obtenerSponsors(),
     obtenerNumeros(),
     obtenerPrecios(),
     obtenerContacto(),
     obtenerSecciones(),
     obtenerNovedades(),
+    obtenerPopup(),
   ]);
   const cifras = numeros ?? NUMEROS_RESPALDO;
   const tarifas = precios ?? PRECIOS_RESPALDO;
@@ -213,6 +228,7 @@ export default async function Home() {
 
   return (
     <>
+      {popup && <PopupBienvenida popup={popup} />}
       <Navbar />
       <main id="main">
         <Hero />
