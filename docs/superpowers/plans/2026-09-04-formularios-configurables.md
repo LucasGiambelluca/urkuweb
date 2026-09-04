@@ -1250,9 +1250,11 @@ popup apunte ahi. Es una siembra: despues se edita todo desde el panel."
 
 Es la prueba que justifica toda la tarea. En el panel, en **Formularios**, cambiar la etiqueta de "CUIT" por "CUIT / CUIL" y guardar. Recargar la home: el campo tiene que decir lo nuevo, sin desplegar nada.
 
-- [ ] **Step 5: Un formulario borrado no rompe la pagina**
+- [ ] **Step 5: Un formulario en uso no se puede borrar**
 
-En el panel, borrar el formulario. Recargar la home: la sección no aparece y **el resto de la página carga normal**. Después volver a sembrarlo con `npm run sembrar:formulario-expo`.
+En el panel, intentar borrar el formulario. **La base lo rechaza** y el formulario queda: `home_blocks_formulario.formulario_id` es `NOT NULL` y su clave foranea es `ON DELETE set null`, dos cosas incompatibles. Con una inscripcion cargada pasa lo mismo por `form_submissions.form_id`.
+
+Verificar que la home sigue respondiendo 200 con todas sus secciones. Es el comportamiento buscado: proteger la pagina publicada. Para borrar un formulario de verdad hay que sacar antes el bloque de la home.
 
 ---
 

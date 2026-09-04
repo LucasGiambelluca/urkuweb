@@ -120,7 +120,7 @@ Igual que `ContactSection`, que se verificó hoy y está bien armado: `aria-inva
 | Campo trampa con contenido | Se responde "gracias", no se guarda |
 | Sexto envío en una hora desde la misma IP | Mensaje pidiendo que espere |
 | La base no responde | Mensaje al visitante, error en el log, la página no se cae |
-| El bloque apunta a un formulario borrado | La sección no se dibuja, en vez de romper la página |
+| Se intenta borrar un formulario que esta puesto en la home | **La base lo rechaza.** `home_blocks_formulario.formulario_id` es `NOT NULL` porque el campo del bloque es obligatorio, y su clave foranea es `ON DELETE set null`: son incompatibles. Lo mismo pasa con `form_submissions.form_id` en cuanto haya una inscripcion. Hay que sacar el bloque de la home primero. Se eligio a proposito: proteger la pagina publicada vale mas que un mensaje de error prolijo |
 
 ## Pruebas
 
