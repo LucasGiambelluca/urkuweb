@@ -10,6 +10,11 @@ import {
   type PreciosDeServicios,
   type DatosDeContacto,
 } from "@/lib/contenido/tipos";
+import {
+  NOVEDADES_RESPALDO,
+  aNovedadVisible,
+  type NovedadVisible,
+} from "@/lib/contenido/novedades";
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
@@ -128,6 +133,34 @@ async function obtenerSecciones(): Promise<BloqueDeSeccion[] | null> {
   }
 }
 
+/**
+ * Tope del campo "cantidad" del bloque de novedades. Se consultan todas de
+ * una y despues cada bloque se queda con las que pidio: asi la consulta sigue
+ * saliendo en paralelo con las demas, sin esperar a saber que dice la ficha.
+ */
+const MAXIMO_DE_NOVEDADES = 12;
+
+async function obtenerNovedades(): Promise<NovedadVisible[] | null> {
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: { status: { equals: 'published' } },
+      // La fecha de publicacion manda; las notas que no la tienen cargada se
+      // ordenan por cuando se crearon.
+      sort: ['-publishedAt', '-createdAt'],
+      limit: MAXIMO_DE_NOVEDADES,
+      // depth 1 trae la categoria y la imagen destacada pobladas.
+      depth: 1,
+    });
+
+    return docs.map((post) => aNovedadVisible(post));
+  } catch (error) {
+    console.error('[home] no se pudieron leer las novedades:', error);
+    return null;
+  }
+}
+
 async function obtenerContacto(): Promise<DatosDeContacto | null> {
   try {
     const payload = await getPayload({ config });
@@ -158,12 +191,13 @@ async function obtenerContacto(): Promise<DatosDeContacto | null> {
 }
 
 export default async function Home() {
-  const [sponsors, numeros, precios, contacto, secciones] = await Promise.all([
+  const [sponsors, numeros, precios, contacto, secciones, notas] = await Promise.all([
     obtenerSponsors(),
     obtenerNumeros(),
     obtenerPrecios(),
     obtenerContacto(),
     obtenerSecciones(),
+    obtenerNovedades(),
   ]);
   const cifras = numeros ?? NUMEROS_RESPALDO;
   const tarifas = precios ?? PRECIOS_RESPALDO;
@@ -172,6 +206,9 @@ export default async function Home() {
   // se arma con el orden por defecto: una caida de base no puede dejar la
   // home sin secciones.
   const bloques = secciones && secciones.length > 0 ? secciones : ORDEN_POR_DEFECTO;
+  // Mientras no haya ninguna nota publicada se muestran las de ejemplo: una
+  // seccion de novedades vacia se ve peor que una con contenido de muestra.
+  const novedades = notas && notas.length > 0 ? notas : NOVEDADES_RESPALDO;
 
   return (
     <>
@@ -184,6 +221,7 @@ export default async function Home() {
           precios={tarifas}
           contacto={datosContacto}
           sponsors={sponsors}
+          novedades={novedades}
         />
         <ContactSection contacto={datosContacto} />
       </main>

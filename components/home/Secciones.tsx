@@ -3,6 +3,7 @@ import type {
   PreciosDeServicios,
   DatosDeContacto,
 } from "@/lib/contenido/tipos";
+import type { NovedadVisible } from "@/lib/contenido/novedades";
 
 import HeroStats from "@/components/home/HeroStats";
 import Story from "@/components/home/Story";
@@ -34,14 +35,25 @@ type PropsDeSecciones = {
   precios: PreciosDeServicios;
   contacto: DatosDeContacto;
   sponsors: SponsorVisible[] | null;
+  novedades: NovedadVisible[];
 };
+
+/** Lo que muestra el bloque de novedades si nadie toco el campo "cantidad". */
+const NOVEDADES_POR_DEFECTO = 6;
 
 /**
  * Traduce los bloques de la ficha "home" a las secciones que van entre la
  * portada y el contacto. Componente de servidor: solo arma JSX a partir de
  * datos que ya se consultaron en la pagina, no consulta nada por su cuenta.
  */
-export default function Secciones({ bloques, numeros, precios, contacto, sponsors }: PropsDeSecciones) {
+export default function Secciones({
+  bloques,
+  numeros,
+  precios,
+  contacto,
+  sponsors,
+  novedades,
+}: PropsDeSecciones) {
   return (
     <>
       {bloques.map((bloque, indice) => {
@@ -69,10 +81,14 @@ export default function Secciones({ bloques, numeros, precios, contacto, sponsor
           case 'sponsors':
             return <SponsorShowcase key={key} sponsors={sponsors} />;
           case 'novedades':
-            // El bloque trae "cantidad" pero NewsFeed todavia no recibe
-            // props: se deja el campo listo del lado de Payload sin
-            // inventarle una prop al componente que no la acepta.
-            return <NewsFeed key={key} />;
+            // La pagina consulta el maximo de notas de una sola vez; cada
+            // bloque se queda con las que pidio en su campo "cantidad".
+            return (
+              <NewsFeed
+                key={key}
+                novedades={novedades.slice(0, bloque.cantidad ?? NOVEDADES_POR_DEFECTO)}
+              />
+            );
           default:
             // Un blockType que no reconocemos no puede tirar abajo la
             // pagina: pasa si alguien saca un bloque del codigo (deja de
