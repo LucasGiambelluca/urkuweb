@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow_Condensed, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { RefrescarAlGuardar } from "@/components/RefrescarAlGuardar";
 
 // ── Display font: Barlow Condensed ──────────────────────────────────────
 const barlowCondensed = Barlow_Condensed({
@@ -54,6 +55,9 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+
+        {/* Refresca la vista previa del panel al guardar. Inerte fuera de el. */}
+        <RefrescarAlGuardar url={process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"} />
       </body>
     </html>
   );

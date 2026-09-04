@@ -40,6 +40,21 @@ export default buildConfig({
       titleSuffix: '- Paseo Urkupina',
       icons: [{ rel: 'icon', type: 'image/png', url: '/icon.png' }],
     },
+    // Vista previa en vivo del armado de la home: muestra la pagina al lado
+    // del formulario y la refresca al guardar.
+    //
+    // La url sale de NEXT_PUBLIC_SERVER_URL. En desarrollo Next toma el
+    // primer puerto libre a partir del 3000, asi que si esa variable apunta
+    // a un puerto donde no hay nada, la vista previa aparece en blanco.
+    livePreview: {
+      url: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+      globals: ['home'],
+      breakpoints: [
+        { name: 'celular', label: 'Celular', width: 390, height: 844 },
+        { name: 'tablet', label: 'Tablet', width: 768, height: 1024 },
+        { name: 'escritorio', label: 'Escritorio', width: 1440, height: 900 },
+      ],
+    },
   },
   collections: [Users, Categories, Media, Posts, Consultas, Sponsors],
   globals: [Numeros, Servicios, Contacto, Home],
