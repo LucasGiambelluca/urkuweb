@@ -2,7 +2,7 @@ import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { es } from '@payloadcms/translations/languages/es';
-import { formBuilderPlugin, formBuilderTranslations } from '@payloadcms/plugin-form-builder';
+import { formBuilderPlugin } from '@payloadcms/plugin-form-builder';
 import sharp from 'sharp';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -61,6 +61,10 @@ export default buildConfig({
   },
   collections: [Users, Categories, Media, Posts, Consultas, Sponsors],
   globals: [Numeros, Servicios, Contacto, Home, Popup],
+  // El plugin de formularios fusiona sus propias traducciones dentro de
+  // i18n.translations segun los idiomas soportados, asi que no hay que
+  // pasarselas a mano: la forma que exporta lleva un envoltorio que el plugin
+  // aplana solo, y pasarla cruda guarda datos mal formados en la config.
   plugins: [
     formBuilderPlugin({
       // Solo los tipos que el cliente va a usar. Los de pago, pais, provincia,
@@ -128,7 +132,6 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { es },
     fallbackLanguage: 'es',
-    translations: formBuilderTranslations,
   },
   // Postgres corre en la misma maquina y se accede por loopback, asi que no
   // lleva SSL. El condicional anterior lo activaba solo para Supabase.
