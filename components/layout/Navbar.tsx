@@ -67,18 +67,25 @@ export default function Navbar() {
     }
   }, []);
 
-  // Lock background scrolling when mobile menu is open
+  // Bloquea el scroll del fondo mientras el menu movil esta abierto.
+  //
+  // Solo toca el scroll cuando el menu esta abierto, y al cerrarlo restaura lo
+  // que hubiera antes en vez de forzar "unset". El menu no es el unico que
+  // bloquea el scroll: el popup de bienvenida tambien, y se monta primero.
+  // Con la version anterior, este efecto corria despues con el menu cerrado y
+  // le pisaba el bloqueo, asi que la pagina scrolleaba por detras del popup.
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
-    }
+    if (!isMobileMenuOpen) return;
+
+    const desbordeDelCuerpo = document.body.style.overflow;
+    const desbordeDeLaRaiz = document.documentElement.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
+      document.body.style.overflow = desbordeDelCuerpo;
+      document.documentElement.style.overflow = desbordeDeLaRaiz;
     };
   }, [isMobileMenuOpen]);
 
