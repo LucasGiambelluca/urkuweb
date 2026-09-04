@@ -11,6 +11,7 @@
     "db:push": "payload db:push",
     "test": "vitest run",
     "sembrar:sponsors": "payload run scripts/sembrar-sponsors.ts",
+    "sembrar:popup": "payload run scripts/sembrar-popup.ts",
     "inicializar:fichas": "payload run scripts/inicializar-fichas.ts"
   },
   "dependencies": {
