@@ -12,7 +12,8 @@
     "test": "vitest run",
     "sembrar:sponsors": "payload run scripts/sembrar-sponsors.ts",
     "sembrar:popup": "payload run scripts/sembrar-popup.ts",
-    "inicializar:fichas": "payload run scripts/inicializar-fichas.ts"
+    "inicializar:fichas": "payload run scripts/inicializar-fichas.ts",
+    "crear:admin": "payload run scripts/crear-admin.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.88.0",
