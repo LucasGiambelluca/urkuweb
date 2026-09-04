@@ -13,18 +13,20 @@ import {
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
-import HeroStats from "@/components/home/HeroStats";
-import Story from "@/components/home/Story";
-import Timeline from "@/components/home/Timeline";
-import StreamingPreview from "@/components/home/StreamingPreview";
-import VisitSection from "@/components/home/VisitSection";
-import ServicesHubSection from "@/components/home/ServicesHubSection";
-import ImpactGrid from "@/components/home/ImpactGrid";
-import CommerceSection from "@/components/home/CommerceSection";
-import SponsorShowcase, { type SponsorVisible } from "@/components/home/SponsorShowcase";
-import NewsFeed from "@/components/home/NewsFeed";
+import Secciones, { type BloqueDeSeccion } from "@/components/home/Secciones";
+import { type SponsorVisible } from "@/components/home/SponsorShowcase";
 import ContactSection from "@/components/home/ContactSection";
 import SiteFooter from "@/components/layout/SiteFooter";
+
+/**
+ * Orden con el que la home venia armada antes de existir el armador (es el
+ * mismo que trae la ficha "home" como valor inicial). Se usa como respaldo:
+ * una caida de base no puede dejar la pagina sin secciones.
+ */
+const ORDEN_POR_DEFECTO: BloqueDeSeccion[] = [
+  'cifras', 'historia', 'lineaDeTiempo', 'streaming', 'visita',
+  'servicios', 'impacto', 'comercio', 'sponsors', 'novedades',
+].map((blockType) => ({ blockType }));
 
 /**
  * Si la base no responde se devuelve null y la seccion cae a sus valores de
@@ -115,6 +117,17 @@ async function obtenerPrecios(): Promise<PreciosDeServicios | null> {
   }
 }
 
+async function obtenerSecciones(): Promise<BloqueDeSeccion[] | null> {
+  try {
+    const payload = await getPayload({ config });
+    const home = await payload.findGlobal({ slug: 'home' });
+    return home.secciones ?? null;
+  } catch (error) {
+    console.error('[home] no se pudo leer el armado de secciones:', error);
+    return null;
+  }
+}
+
 async function obtenerContacto(): Promise<DatosDeContacto | null> {
   try {
     const payload = await getPayload({ config });
@@ -145,31 +158,33 @@ async function obtenerContacto(): Promise<DatosDeContacto | null> {
 }
 
 export default async function Home() {
-  const [sponsors, numeros, precios, contacto] = await Promise.all([
+  const [sponsors, numeros, precios, contacto, secciones] = await Promise.all([
     obtenerSponsors(),
     obtenerNumeros(),
     obtenerPrecios(),
     obtenerContacto(),
+    obtenerSecciones(),
   ]);
   const cifras = numeros ?? NUMEROS_RESPALDO;
   const tarifas = precios ?? PRECIOS_RESPALDO;
   const datosContacto = contacto ?? CONTACTO_RESPALDO;
+  // Si la consulta fallo (null) o la ficha quedo sin bloques (lista vacia),
+  // se arma con el orden por defecto: una caida de base no puede dejar la
+  // home sin secciones.
+  const bloques = secciones && secciones.length > 0 ? secciones : ORDEN_POR_DEFECTO;
 
   return (
     <>
       <Navbar />
       <main id="main">
         <Hero />
-        <HeroStats numeros={cifras} />
-        <Story numeros={cifras} />
-        <Timeline />
-        <StreamingPreview canalYoutube={datosContacto.redes.youtube} />
-        <VisitSection numeros={cifras} />
-        <ServicesHubSection precios={tarifas} numeros={cifras} contacto={datosContacto} />
-        <ImpactGrid numeros={cifras} />
-        <CommerceSection numeros={cifras} />
-        <SponsorShowcase sponsors={sponsors} />
-        <NewsFeed />
+        <Secciones
+          bloques={bloques}
+          numeros={cifras}
+          precios={tarifas}
+          contacto={datosContacto}
+          sponsors={sponsors}
+        />
         <ContactSection contacto={datosContacto} />
       </main>
       <SiteFooter contacto={datosContacto} />
