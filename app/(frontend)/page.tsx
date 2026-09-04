@@ -13,6 +13,7 @@ import {
 import {
   NOVEDADES_RESPALDO,
   aNovedadVisible,
+  ordenarNovedades,
   type NovedadVisible,
 } from "@/lib/contenido/novedades";
 
@@ -154,7 +155,7 @@ async function obtenerNovedades(): Promise<NovedadVisible[] | null> {
       depth: 1,
     });
 
-    return docs.map((post) => aNovedadVisible(post));
+    return ordenarNovedades(docs.map((post) => aNovedadVisible(post)));
   } catch (error) {
     console.error('[home] no se pudieron leer las novedades:', error);
     return null;

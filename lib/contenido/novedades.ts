@@ -145,3 +145,18 @@ export const aNovedadVisible = (post: Post, ahora: Date = new Date()): NovedadVi
     isUpcoming: Boolean(post.publishedAt) && new Date(post.publishedAt as string) > ahora,
   };
 };
+
+/**
+ * Ordena las novedades de la mas nueva a la mas vieja, y manda al final las
+ * que quedaron sin fecha.
+ *
+ * La consulta ya pide ese orden, pero lo repite aca para que lo que se ve
+ * coincida siempre con la fecha que muestra cada tarjeta, sin depender de
+ * como ordene los nulos el motor de la base.
+ */
+export const ordenarNovedades = (novedades: NovedadVisible[]): NovedadVisible[] => {
+  const momento = (novedad: NovedadVisible): number =>
+    novedad.created_at ? new Date(novedad.created_at).getTime() : Number.NEGATIVE_INFINITY;
+
+  return [...novedades].sort((una, otra) => momento(otra) - momento(una));
+};

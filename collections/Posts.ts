@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload';
 import { revalidatePath } from 'next/cache';
+import { completarFechaDePublicacion } from '../lib/contenido/publicacion';
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -20,8 +21,14 @@ export const Posts: CollectionConfig = {
     },
   },
   hooks: {
+    beforeChange: [
+      // Una nota que sale publicada sin fecha queda con publishedAt en null, y
+      // los nulos se ordenan antes que cualquier fecha: tapaban al resto de
+      // las novedades en la home. Se completa con la fecha del momento.
+      ({ data, originalDoc }) => completarFechaDePublicacion(data, originalDoc),
+    ],
     afterChange: [
-      async ({ doc, previousDoc }) => {
+      async ({ doc }) => {
         // Ejecutar purga de caché cuando el post está publicado o se actualiza
         if (doc.status === 'published') {
           try {

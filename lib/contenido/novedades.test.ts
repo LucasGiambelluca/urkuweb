@@ -3,7 +3,9 @@ import type { Post } from '@/payload-types';
 import {
   NOVEDADES_RESPALDO,
   aNovedadVisible,
+  ordenarNovedades,
   textoPlano,
+  type NovedadVisible,
 } from './novedades';
 
 /** Arma un richText de Lexical con los parrafos que se le pasen. */
@@ -106,5 +108,37 @@ describe('NOVEDADES_RESPALDO', () => {
     for (const novedad of NOVEDADES_RESPALDO) {
       expect(novedad.image).toBeTruthy();
     }
+  });
+});
+
+describe('ordenarNovedades', () => {
+  const novedad = (id: string, fecha?: string): NovedadVisible => ({
+    id,
+    title: id,
+    content: '',
+    created_at: fecha,
+  });
+
+  it('deja primero la mas reciente', () => {
+    const orden = ordenarNovedades([
+      novedad('vieja', '2026-01-01T00:00:00.000Z'),
+      novedad('nueva', '2026-09-01T00:00:00.000Z'),
+      novedad('media', '2026-05-01T00:00:00.000Z'),
+    ]).map((n) => n.id);
+    expect(orden).toEqual(['nueva', 'media', 'vieja']);
+  });
+
+  it('manda al final las que no tienen fecha', () => {
+    const orden = ordenarNovedades([
+      novedad('sin-fecha'),
+      novedad('con-fecha', '2026-01-01T00:00:00.000Z'),
+    ]).map((n) => n.id);
+    expect(orden).toEqual(['con-fecha', 'sin-fecha']);
+  });
+
+  it('no modifica la lista original', () => {
+    const lista = [novedad('a', '2026-01-01T00:00:00.000Z'), novedad('b', '2026-09-01T00:00:00.000Z')];
+    ordenarNovedades(lista);
+    expect(lista.map((n) => n.id)).toEqual(['a', 'b']);
   });
 });
