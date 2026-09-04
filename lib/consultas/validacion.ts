@@ -20,6 +20,10 @@ export type ResultadoValidacion =
 const TIPOS: TipoConsulta[] = ['contacto', 'publicidad'];
 const LARGO_MINIMO_MENSAJE = 10;
 const LARGO_MAXIMO_MENSAJE = 5000;
+const LARGO_MAXIMO_NOMBRE = 120;
+const LARGO_MAXIMO_TELEFONO = 40;
+const LARGO_MAXIMO_EMPRESA = 160;
+const LARGO_MAXIMO_ASUNTO = 160;
 const FORMATO_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const limpiar = (valor: string | undefined): string => (valor ?? '').trim();
@@ -41,6 +45,8 @@ export function validarConsulta(entrada: EntradaConsulta): ResultadoValidacion {
   const nombre = limpiar(entrada.nombre);
   if (nombre === '') {
     errores.nombre = 'El nombre y apellido son obligatorios.';
+  } else if (nombre.length > LARGO_MAXIMO_NOMBRE) {
+    errores.nombre = 'El nombre es demasiado largo.';
   }
 
   const email = limpiar(entrada.email).toLowerCase();
@@ -48,6 +54,23 @@ export function validarConsulta(entrada: EntradaConsulta): ResultadoValidacion {
     errores.email = 'El correo electronico es obligatorio.';
   } else if (!FORMATO_EMAIL.test(email)) {
     errores.email = 'Ingresa un correo electronico valido.';
+  }
+
+  // Telefono, empresa y asunto son opcionales: si vienen vacios no es un
+  // error, solo se valida el largo cuando traen algo.
+  const telefono = limpiar(entrada.telefono);
+  if (telefono !== '' && telefono.length > LARGO_MAXIMO_TELEFONO) {
+    errores.telefono = 'El telefono es demasiado largo.';
+  }
+
+  const empresa = limpiar(entrada.empresa);
+  if (empresa !== '' && empresa.length > LARGO_MAXIMO_EMPRESA) {
+    errores.empresa = 'El nombre de la empresa es demasiado largo.';
+  }
+
+  const asunto = limpiar(entrada.asunto);
+  if (asunto !== '' && asunto.length > LARGO_MAXIMO_ASUNTO) {
+    errores.asunto = 'El asunto es demasiado largo.';
   }
 
   // El mensaje es obligatorio en el formulario de contacto, donde es todo el
@@ -77,9 +100,9 @@ export function validarConsulta(entrada: EntradaConsulta): ResultadoValidacion {
       tipo: tipo as TipoConsulta,
       nombre,
       email,
-      telefono: limpiar(entrada.telefono),
-      empresa: limpiar(entrada.empresa),
-      asunto: limpiar(entrada.asunto),
+      telefono,
+      empresa,
+      asunto,
       formato: limpiar(entrada.formato),
       mensaje,
     },

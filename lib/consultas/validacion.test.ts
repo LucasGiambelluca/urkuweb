@@ -102,4 +102,59 @@ describe('validarConsulta', () => {
     const r = validarConsulta({ ...base, nombre: '', email: '', mensaje: '' });
     expect(!r.ok && Object.keys(r.errores)).toHaveLength(3);
   });
+
+  it('acepta un nombre en el limite de largo', () => {
+    const r = validarConsulta({ ...base, nombre: 'a'.repeat(120) });
+    expect(r.ok).toBe(true);
+  });
+
+  it('rechaza un nombre mas largo que el limite', () => {
+    const r = validarConsulta({ ...base, nombre: 'a'.repeat(121) });
+    expect(!r.ok && r.errores.nombre).toBeTruthy();
+  });
+
+  it('un nombre vacio da el error de obligatorio, no el de largo', () => {
+    const r = validarConsulta({ ...base, nombre: '' });
+    expect(!r.ok && r.errores.nombre).toBe('El nombre y apellido son obligatorios.');
+  });
+
+  it('acepta un telefono en el limite de largo', () => {
+    const r = validarConsulta({ ...base, telefono: '1'.repeat(40) });
+    expect(r.ok).toBe(true);
+  });
+
+  it('rechaza un telefono mas largo que el limite', () => {
+    const r = validarConsulta({ ...base, telefono: '1'.repeat(41) });
+    expect(!r.ok && r.errores.telefono).toBeTruthy();
+  });
+
+  it('acepta una empresa en el limite de largo', () => {
+    const r = validarConsulta({ ...base, empresa: 'a'.repeat(160) });
+    expect(r.ok).toBe(true);
+  });
+
+  it('rechaza una empresa mas larga que el limite', () => {
+    const r = validarConsulta({ ...base, empresa: 'a'.repeat(161) });
+    expect(!r.ok && r.errores.empresa).toBeTruthy();
+  });
+
+  it('la empresa vacia no es un error', () => {
+    const r = validarConsulta({ ...base, empresa: '' });
+    expect(r.ok).toBe(true);
+  });
+
+  it('acepta un asunto en el limite de largo', () => {
+    const r = validarConsulta({ ...base, asunto: 'a'.repeat(160) });
+    expect(r.ok).toBe(true);
+  });
+
+  it('rechaza un asunto mas largo que el limite', () => {
+    const r = validarConsulta({ ...base, asunto: 'a'.repeat(161) });
+    expect(!r.ok && r.errores.asunto).toBeTruthy();
+  });
+
+  it('el asunto vacio no es un error', () => {
+    const r = validarConsulta({ ...base, asunto: '' });
+    expect(r.ok).toBe(true);
+  });
 });
