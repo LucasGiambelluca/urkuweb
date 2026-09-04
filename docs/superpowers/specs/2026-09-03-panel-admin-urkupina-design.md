@@ -75,6 +75,23 @@ Durante la ejecución de la Fase 0 se descubrió que **las credenciales del proy
 
 Si algún día se recupera el acceso al proyecto, los datos siguen ahí y se pueden importar. No bloquea nada.
 
+## 2.ter Enmienda del 2026-09-03: se pasa a bloques con vista previa
+
+Al ver el panel funcionando, el cliente identificó que esperaba algo más parecido a un armador de páginas tipo WordPress. Es la tercera opción que se había ofrecido al definir el alcance y que en su momento se descartó por costo; con el panel a la vista, la decisión cambió.
+
+**Qué se decidió:** las secciones que tiene sentido reordenar, repetir o esconder pasan a ser bloques que se arman desde el panel. Las institucionales quedan fijas. Se activa Live Preview.
+
+**Distinción importante que se aclaró antes de decidir:**
+
+- *Gutenberg* (bloques configurados en un formulario, la página los renderiza en orden) es lo que Payload hace de fábrica. Es lo que se va a construir.
+- *Elementor o Divi* (arrastrar cajas sobre la página misma) no es algo que Payload provea. Construirlo sería un proyecto en sí mismo. Queda explícitamente fuera de alcance.
+
+**Qué queda fijo y por qué:** `Hero`, `Story` y `Timeline` cuentan la historia institucional en un orden que tiene sentido narrativo; reordenarlas solo puede empeorarlas. `ContactSection` cierra la página. El resto pasa a bloques.
+
+**Qué se conserva de lo hecho:** toda la infraestructura, usuarios y permisos, backups, deploy, y sobre todo la captura de consultas. Las fichas y colecciones de contenido (sponsors, números, precios, contacto) pasan a ser los datos que consumen los bloques, no se descartan.
+
+**Riesgo asumido:** un armador de bloques permite dejar la página desarmada, porque no hay nadie validando el resultado visual. Es el precio de la libertad que se pidió, y es el mismo que se paga en WordPress.
+
 ## 3. Decisiones tomadas
 
 | Tema | Decisión |
