@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, [data-theme="dark"], .dark *));
+@variant dark (&:where(.dark, [data-theme="dark"], .dark *));
 
 /* ─── Font theme tokens & Semantic Colors ──────────────────────────── */
 @theme {

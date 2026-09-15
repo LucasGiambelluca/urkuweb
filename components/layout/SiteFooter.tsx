@@ -33,6 +33,14 @@ function YoutubeIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+function TiktokIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
+  );
+}
+
 export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) {
 
   return (
@@ -160,7 +168,7 @@ export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) 
               El paseo de compras textil mayorista más grande del país. Conectamos fabricantes con compradores.
             </p>
 
-            {/* Social Icons Row (Painted Default State with Inverted Hover) */}
+            {/* Social Icons Row (Instagram, Facebook, YouTube, TikTok) */}
             <div className="pt-2 flex items-center gap-3">
               <a
                 href={contacto.redes.instagram}
@@ -190,6 +198,16 @@ export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) 
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EB2347] text-white border border-[#EB2347] shadow-md shadow-[#EB2347]/30 transition-all hover:bg-transparent hover:text-white hover:border-white hover:shadow-none focus-visible:ring-2 focus-visible:ring-[#EB2347] focus-visible:ring-offset-2"
               >
                 <YoutubeIcon aria-hidden="true" />
+              </a>
+
+              <a
+                href="https://www.tiktok.com/@urkupinasa"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok oficial de Urkupiña @urkupinasa"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EB2347] text-white border border-[#EB2347] shadow-md shadow-[#EB2347]/30 transition-all hover:bg-transparent hover:text-white hover:border-white hover:shadow-none focus-visible:ring-2 focus-visible:ring-[#EB2347] focus-visible:ring-offset-2"
+              >
+                <TiktokIcon aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -310,6 +328,18 @@ export default function SiteFooter({ contacto }: { contacto: DatosDeContacto }) 
                 >
                   {contacto.email}
                 </a>
+              </li>
+              <li className="pt-2 border-t border-white/10">
+                <span className="text-[10px] font-extrabold uppercase tracking-[.18em] text-[#7DD3FC] block mb-1">
+                  Evento Destacado
+                </span>
+                <Link
+                  href="/expo-urku-2026"
+                  className="font-display text-base font-extrabold uppercase tracking-wider text-[#1C9FE4] hover:text-[#7DD3FC] transition-colors inline-flex items-center gap-1.5"
+                >
+                  EXPOURKU 2026
+                  <ArrowRight size={14} className="shrink-0" />
+                </Link>
               </li>
             </ul>
           </div>
