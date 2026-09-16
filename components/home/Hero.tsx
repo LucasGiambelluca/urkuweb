@@ -192,7 +192,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="absolute -bottom-8 sm:-bottom-10 right-6 sm:right-12 md:right-16 z-50 hidden lg:block"
+        className="absolute -bottom-8 sm:-bottom-10 right-6 sm:right-12 md:right-16 lg:right-[22rem] xl:right-[24rem] z-50 hidden lg:block"
       >
         <div className="transition-transform duration-300 hover:scale-105 filter drop-shadow-2xl">
           <Image
